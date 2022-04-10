@@ -1,0 +1,15 @@
+---
+  version: '2'  
+  
+  volumes:
+    docker_data:
+      driver: local
+      driver_opts:
+        o: bind
+        device: /data/docker
+
+  networks:
+    cluster_network:
+      driver: bridge
+      driver_opts:
+        subnet: 172.18.0.0/23

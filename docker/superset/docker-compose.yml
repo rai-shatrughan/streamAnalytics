@@ -1,0 +1,25 @@
+---
+  version: '2'
+  services:
+  
+    superset:
+      build: .
+      image: superset
+      container_name: superset
+      volumes:
+        - sr_docker_data:/tmp
+      command: >
+          bash -c "/usr/bin/run-server.sh"
+      ports:
+        - "8088:8088"
+      networks:
+        sr_cluster_network:
+          ipv4_address: ${SUPERSET_IP}
+    
+  volumes:
+    sr_docker_data:
+      external: true
+
+  networks:
+    sr_cluster_network:
+      external: true
