@@ -9,16 +9,16 @@ import io.vertx.core.http.HttpServer;
 
 public class MainVerticle extends AbstractVerticle {
 
-  int port = 8000;
+  int port = Constants.WS_SERVER_PORT;
   String defaultPath = "/";
   String basePath = "/api/v1/";
   String timeSeriesPath = "ts";
   String streamPath = "stream";
 
-  public static void main(String[] args) {
-    Vertx vertx = Vertx.vertx();
-    vertx.deployVerticle(new MainVerticle());
-  }
+  // public static void main(String[] args) {
+  //   Vertx vertx = Vertx.vertx();
+  //   vertx.deployVerticle(new MainVerticle());
+  // }
 
   @Override
   public void start(Promise<Void> startPromise) throws Exception {
@@ -35,7 +35,7 @@ public class MainVerticle extends AbstractVerticle {
     streamRoute.handler(ctx -> Handlers.streamHandler(ctx));
 
     server.requestHandler(router)
-          .listen(this.port, res -> Handlers.serverHandler(port, res));
+          .listen(port, res -> Handlers.serverHandler(port, res));
 
   }
 }

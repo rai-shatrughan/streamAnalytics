@@ -13,7 +13,18 @@ import io.vertx.kafka.client.producer.KafkaProducerRecord;
 
 public class Handlers {
 
-  static Vertx vertx = Vertx.vertx();
+  static KafkaProducer<String, String> producer;
+
+  static {
+    Vertx vertx = Vertx.vertx();
+    Map<String, String> config = new HashMap<>();
+    config.put("bootstrap.servers", Constants.KAFKA_BOOTSTRAP_SERVERS);
+    config.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+    config.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+    config.put("acks", "1");
+    producer = KafkaProducer.create(vertx, config);
+    System.out.println("Initializing Kafka Producer");
+  }
 
   public static void serverHandler(int port, AsyncResult<HttpServer> res) {
     if (res.succeeded()) {
@@ -30,38 +41,30 @@ public class Handlers {
   }
 
   public static void timeSeriesHandler(RoutingContext ctx) {
-    kafkaWriter(ctx);
+    kafkaWriter(ctx, Constants.KAFKA_TS_TOPIC, "message_ts");
     HttpServerResponse response = ctx.response();
     response.putHeader("content-type", "text/plain");
     response.end("Hello TS!");
   }
 
   public static void streamHandler(RoutingContext ctx) {
+    kafkaWriter(ctx, Constants.KAFKA_STREAM_TOPIC, "message_stream");
     HttpServerResponse response = ctx.response();
     response.putHeader("content-type", "text/plain");
     response.end("Hello Streams!");
   }
 
-  private static void kafkaWriter(RoutingContext ctx){
-      Map<String, String> config = new HashMap<>();
-      config.put("bootstrap.servers", "172.18.0.41:9092");
-      config.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-      config.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-      config.put("acks", "1");
-
+  private static void kafkaWriter(RoutingContext ctx, String topic, String message){
       System.out.println("Hello Kafka: " );
+      KafkaProducerRecord<String, String> record = KafkaProducerRecord.create(topic, message + 0);
 
-      // use producer for interacting with Apache Kafka
-      KafkaProducer<String, String> producer = KafkaProducer.create(vertx, config);
-
-      KafkaProducerRecord<String, String> record = KafkaProducerRecord.create("test1", "message_" + 0);
       producer.send(record)
         .onSuccess(recordMetadata ->
-          System.out.println(
-            "Message " + record.value() + " written on topic=" + recordMetadata.getTopic() +
-            ", partition=" + recordMetadata.getPartition() +
-            ", offset=" + recordMetadata.getOffset()
-          )
+            System.out.println(
+              "Message " + record.value() + " written on topic=" + recordMetadata.getTopic() +
+              ", partition=" + recordMetadata.getPartition() +
+              ", offset=" + recordMetadata.getOffset()
+            )
           )
         .onFailure(cause -> System.out.println("Write failed: " + cause));
 
