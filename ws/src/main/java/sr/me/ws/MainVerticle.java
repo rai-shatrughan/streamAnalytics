@@ -15,10 +15,10 @@ public class MainVerticle extends AbstractVerticle {
   String timeSeriesPath = "ts";
   String streamPath = "stream";
 
-  // public static void main(String[] args) {
-  //   Vertx vertx = Vertx.vertx();
-  //   vertx.deployVerticle(new MainVerticle());
-  // }
+  public static void main(String[] args) {
+    Vertx vertx = Vertx.vertx();
+    vertx.deployVerticle(new MainVerticle());
+  }
 
   @Override
   public void start(Promise<Void> startPromise) throws Exception {

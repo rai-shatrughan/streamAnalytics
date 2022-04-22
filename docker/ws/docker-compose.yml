@@ -1,0 +1,17 @@
+---
+  version: '2'  
+
+  services:
+    sr-me-ws:
+      image: sr-me-ws:v1
+      container_name: sr-me-ws
+      hostname: sr-me-ws
+      expose:
+        - "8000"
+      networks:
+        sr_cluster_network:
+          ipv4_address: ${SR_WS_IP}
+  
+  networks:
+    sr_cluster_network:
+      external: true

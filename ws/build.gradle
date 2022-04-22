@@ -1,0 +1,38 @@
+plugins {
+    id 'io.vertx.vertx-plugin' version '1.3.0'
+    id 'com.google.cloud.tools.jib' version '3.2.1'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.vertx:vertx-web'
+    implementation 'io.vertx:vertx-kafka-client'
+   // implementation 'ch.qos.logback:logback-classic:1.2.3'
+}
+
+vertx {
+    vertxVersion = '4.2.7'
+    mainVerticle = 'sr.me.ws.MainVerticle'
+    jvmArgs = ['-Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.SLF4JLogDelegateFactory']
+}
+
+application {
+  mainClassName = 'sr.me.ws.MainVerticle'
+}
+
+jib {
+    from {
+      image = 'eclipse-temurin:11-jre'
+    }
+    to {
+        image = 'sr-me-ws'
+        tags = ['v1']
+      }
+    container {
+      mainClass = application.mainClassName
+      ports = ['8000']
+    }
+}

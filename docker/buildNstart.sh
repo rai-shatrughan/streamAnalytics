@@ -1,4 +1,4 @@
-components=("sr" "kafka" "superset" "ignite" "druid")
+components=("sr" "ws" "kafka" "superset" "ignite" "druid")
 
 for comp in ${components[@]}; do
     docker-compose --env-file .env -f $comp/docker-compose.yml down
