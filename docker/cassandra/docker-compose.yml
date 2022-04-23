@@ -1,0 +1,26 @@
+version: "2.2"
+
+services:
+  cassandra:
+    image: cassandra:latest
+    container_name: cassandra
+    hostname: cassandra
+    expose:
+      - "7000"
+      - "9042"
+    volumes:
+      - sr_docker_data:/var/lib/
+    environment:
+      - CASSANDRA_LISTEN_ADDRESS=${CASSANDRA_IP}
+      - CASSANDRA_BROADCAST_ADDRESS=${CASSANDRA_IP}
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${CASSANDRA_IP}
+
+volumes:
+  sr_docker_data:
+    external: true
+
+networks:
+  sr_cluster_network:
+    external: true

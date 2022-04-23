@@ -1,11 +1,11 @@
-components=("sr" "ws" "kafka" "superset" "ignite" "druid")
+components=("sr" "ws" "kafka" "superset" "cassandra")
 
 for comp in ${components[@]}; do
     docker-compose --env-file .env -f $comp/docker-compose.yml down
 done
 
 root_path=/data/docker
-data_folders=("kafka" "zookeeper" "superset" "ignite" "druid")
+data_folders=("kafka" "zookeeper" "superset" )
 for dir in ${data_folders[@]}; do
     wd=$root_path/$dir
 
