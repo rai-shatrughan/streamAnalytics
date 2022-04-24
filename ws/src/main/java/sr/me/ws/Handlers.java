@@ -41,10 +41,11 @@ public class Handlers {
   }
 
   public static void timeSeriesHandler(RoutingContext ctx) {
-    kafkaWriter(ctx, Constants.KAFKA_TS_TOPIC, "message_ts");
+    String tsJson = ctx.getBodyAsJsonArray().toString();
+    kafkaWriter(ctx, Constants.KAFKA_TS_TOPIC, tsJson);
     HttpServerResponse response = ctx.response();
     response.putHeader("content-type", "text/plain");
-    response.end("Hello TS!");
+    response.end(tsJson);
   }
 
   public static void streamHandler(RoutingContext ctx) {

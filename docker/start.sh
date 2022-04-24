@@ -1,6 +1,6 @@
 #!/bin/bash
 
-components=("ws" "kafka" "superset" "cassandra")
+components=("ws" "kafka" "cassandra")
 
 for comp in ${components[@]}; do
     docker-compose --env-file .env -f $comp/docker-compose.yml down

@@ -4,6 +4,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.Route;
 import io.vertx.core.http.HttpServer;
 
@@ -25,6 +26,7 @@ public class MainVerticle extends AbstractVerticle {
 
     HttpServer server = vertx.createHttpServer();
     Router router = Router.router(vertx);
+    router.route().handler(BodyHandler.create());
 
     Route defaultRoute = router.route(defaultPath);
     Route timeSeriesRoute = router.route(basePath+timeSeriesPath);

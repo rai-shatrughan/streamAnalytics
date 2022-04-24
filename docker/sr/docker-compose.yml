@@ -7,6 +7,21 @@
       driver_opts:
         o: bind
         device: /data/docker
+    kafka_data:
+      driver: local
+      driver_opts:
+        o: bind
+        device: /data/docker/kafka
+    zookeeper_data:
+      driver: local
+      driver_opts:
+        o: bind
+        device: /data/docker/zookeeper
+    cassandra_data:
+      driver: local
+      driver_opts:
+        o: bind
+        device: /data/docker/cassandra        
 
   networks:
     cluster_network:

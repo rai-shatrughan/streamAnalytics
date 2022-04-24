@@ -1,11 +1,11 @@
-components=("sr" "ws" "kafka" "superset" "cassandra")
+components=("sr" "ws" "kafka" "cassandra")
 
 for comp in ${components[@]}; do
     docker-compose --env-file .env -f $comp/docker-compose.yml down
 done
 
 root_path=/data/docker
-data_folders=("kafka" "zookeeper" "superset" )
+data_folders=("kafka" "zookeeper" "cassandra")
 for dir in ${data_folders[@]}; do
     wd=$root_path/$dir
 
@@ -21,7 +21,7 @@ for dir in ${data_folders[@]}; do
 done
 
 #druid has many folders so manage them separately
-bash druid/vol-manager.sh
+#bash druid/vol-manager.sh
 
 for comp in ${components[@]}; do
     docker-compose --env-file .env -f $comp/docker-compose.yml build 
@@ -29,4 +29,4 @@ for comp in ${components[@]}; do
 done
 
 #configure superset for 1st time usage.
-bash superset/init.sh
+#bash superset/init.sh

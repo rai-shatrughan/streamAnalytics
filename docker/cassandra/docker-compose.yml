@@ -9,7 +9,7 @@ services:
       - "7000"
       - "9042"
     volumes:
-      - sr_docker_data:/var/lib/
+      - sr_cassandra_data:/var/lib/cassandra
     environment:
       - CASSANDRA_LISTEN_ADDRESS=${CASSANDRA_IP}
       - CASSANDRA_BROADCAST_ADDRESS=${CASSANDRA_IP}
@@ -18,7 +18,7 @@ services:
         ipv4_address: ${CASSANDRA_IP}
 
 volumes:
-  sr_docker_data:
+  sr_cassandra_data:
     external: true
 
 networks:

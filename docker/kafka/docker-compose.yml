@@ -10,7 +10,7 @@ services:
       - "2888"
       - "3888"
     volumes:
-      - sr_docker_data:/bitnami
+      - sr_zookeeper_data:/bitnami
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
     networks:
@@ -24,7 +24,7 @@ services:
     expose:
       - "9092"
     volumes:
-      - sr_docker_data:/bitnami
+      - sr_kafka_data:/bitnami
     environment:
       - KAFKA_BROKER_ID=1
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
@@ -39,7 +39,9 @@ services:
       - kafka_zookeeper
 
 volumes:
-  sr_docker_data:
+  sr_zookeeper_data:
+    external: true
+  sr_kafka_data:
     external: true
 
 networks:
