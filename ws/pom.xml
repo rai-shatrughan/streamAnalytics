@@ -227,23 +227,6 @@
           </arguments>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>com.google.cloud.tools</groupId>
-        <artifactId>jib-maven-plugin</artifactId>
-        <version>3.2.1</version>
-        <configuration>
-          <from>
-            <image>openjdk:alpine</image>
-          </from>
-          <to>
-            <image>sr-ws-java</image>
-          </to>
-          <container>
-            <mainClass>sr.me.ws.MainVerticle</mainClass>
-            <format>OCI</format>
-          </container>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 

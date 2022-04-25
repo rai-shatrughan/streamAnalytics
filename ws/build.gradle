@@ -19,10 +19,6 @@ vertx {
     jvmArgs = ['-Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.SLF4JLogDelegateFactory']
 }
 
-application {
-  mainClassName = 'sr.me.ws.MainVerticle'
-}
-
 jib {
     from {
       image = 'eclipse-temurin:11-jre'
@@ -32,7 +28,7 @@ jib {
         tags = ['v1']
       }
     container {
-      mainClass = application.mainClassName
+      mainClass = vertx.mainVerticle
       ports = ['8000']
     }
 }

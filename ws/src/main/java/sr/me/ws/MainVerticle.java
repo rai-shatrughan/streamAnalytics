@@ -16,16 +16,8 @@ public class MainVerticle extends AbstractVerticle {
   String timeSeriesPath = "ts";
   String streamPath = "stream";
 
-  static Vertx vertx;
-
-  public static void main(String[] args) {
-    vertx = Vertx.vertx();
-    vertx.deployVerticle(new MainVerticle());
-  }
-
   @Override
   public void start(Promise<Void> startPromise) throws Exception {
-
     HttpServer server = vertx.createHttpServer();
     Router router = Router.router(vertx);
     router.route().handler(BodyHandler.create());

@@ -5,3 +5,5 @@
 #mvnw exec:java
 
 bash gradlew jibDockerBuild
+
+#bash gradlew vertxRun
