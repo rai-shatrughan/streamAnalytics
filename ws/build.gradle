@@ -28,7 +28,8 @@ jib {
         tags = ['v1']
       }
     container {
-      mainClass = vertx.mainVerticle
+      mainClass = "io.vertx.core.Launcher"
+      args =['run', vertx.mainVerticle]
       ports = ['8000']
     }
 }
