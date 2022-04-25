@@ -16,8 +16,10 @@ public class MainVerticle extends AbstractVerticle {
   String timeSeriesPath = "ts";
   String streamPath = "stream";
 
+  static Vertx vertx;
+
   public static void main(String[] args) {
-    Vertx vertx = Vertx.vertx();
+    vertx = Vertx.vertx();
     vertx.deployVerticle(new MainVerticle());
   }
 
@@ -28,16 +30,18 @@ public class MainVerticle extends AbstractVerticle {
     Router router = Router.router(vertx);
     router.route().handler(BodyHandler.create());
 
+    Handlers handlers = new Handlers(vertx);
+
     Route defaultRoute = router.route(defaultPath);
     Route timeSeriesRoute = router.route(basePath+timeSeriesPath);
     Route streamRoute = router.route(basePath+streamPath);
 
-    defaultRoute.handler(ctx -> Handlers.defaultRouteHandler(ctx));
-    timeSeriesRoute.handler(ctx -> Handlers.timeSeriesHandler(ctx));
-    streamRoute.handler(ctx -> Handlers.streamHandler(ctx));
+    defaultRoute.handler(ctx -> handlers.defaultRouteHandler(ctx));
+    timeSeriesRoute.handler(ctx -> handlers.timeSeriesHandler(ctx));
+    streamRoute.handler(ctx -> handlers.streamHandler(ctx));
 
     server.requestHandler(router)
-          .listen(port, res -> Handlers.serverHandler(port, res));
+          .listen(port, res -> handlers.serverHandler(port, res));
 
   }
 }

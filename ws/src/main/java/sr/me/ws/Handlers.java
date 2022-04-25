@@ -15,8 +15,7 @@ public class Handlers {
 
   static KafkaProducer<String, String> producer;
 
-  static {
-    Vertx vertx = Vertx.vertx();
+  public Handlers(Vertx vertx){
     Map<String, String> config = new HashMap<>();
     config.put("bootstrap.servers", Constants.KAFKA_BOOTSTRAP_SERVERS);
     config.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
@@ -26,7 +25,7 @@ public class Handlers {
     System.out.println("Initializing Kafka Producer");
   }
 
-  public static void serverHandler(int port, AsyncResult<HttpServer> res) {
+  public void serverHandler(int port, AsyncResult<HttpServer> res) {
     if (res.succeeded()) {
       System.out.println("Server is now listening! - "+ port);
     } else {
@@ -34,21 +33,21 @@ public class Handlers {
     }
   }
 
-  public static void defaultRouteHandler(RoutingContext ctx) {
+  public void defaultRouteHandler(RoutingContext ctx) {
     HttpServerResponse response = ctx.response();
     response.putHeader("content-type", "text/plain");
     response.end("Hello World from Vert.x-Web!");
   }
 
-  public static void timeSeriesHandler(RoutingContext ctx) {
-    String tsJson = ctx.getBodyAsJsonArray().toString();
+  public void timeSeriesHandler(RoutingContext ctx) {
+    String tsJson = ctx.getBodyAsString();
     kafkaWriter(ctx, Constants.KAFKA_TS_TOPIC, tsJson);
     HttpServerResponse response = ctx.response();
     response.putHeader("content-type", "text/plain");
     response.end(tsJson);
   }
 
-  public static void streamHandler(RoutingContext ctx) {
+  public void streamHandler(RoutingContext ctx) {
     kafkaWriter(ctx, Constants.KAFKA_STREAM_TOPIC, "message_stream");
     HttpServerResponse response = ctx.response();
     response.putHeader("content-type", "text/plain");
