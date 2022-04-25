@@ -19,6 +19,8 @@
     <vertx.version>4.2.7</vertx.version>
     <junit-jupiter.version>5.7.0</junit-jupiter.version>
 
+    <jkube.version>1.7.0</jkube.version>
+
     <main.verticle>sr.me.ws.MainVerticle</main.verticle>
     <launcher.class>io.vertx.core.Launcher</launcher.class>
   </properties>
@@ -225,6 +227,23 @@
             <argument>run</argument>
             <argument>${main.verticle}</argument>
           </arguments>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.jkube</groupId>
+        <artifactId>kubernetes-maven-plugin</artifactId>
+        <version>${jkube.version}</version>
+        <configuration>
+          <images>
+            <image>
+              <name>me-sr-ws-v1</name>
+              <alias>me-sr-ws</alias>
+              <build>
+                <from>eclipse-temurin:11-jre</from>
+                <cmd>java -cp @/app/jib-classpath-file io.vertx.core.Launcher run sr.me.ws.MainVerticle</cmd>
+              </build>
+            </image>
+          </images>
         </configuration>
       </plugin>
     </plugins>
