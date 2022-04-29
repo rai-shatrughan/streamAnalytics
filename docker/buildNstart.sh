@@ -1,10 +1,15 @@
-components=("sr" "ws" "kafka" "cassandra")
+ docker network create \
+    --driver=bridge \
+    --subnet=172.18.0.0/23 \
+    sr_cluster_network
+
+components=("ws" "kafka" "cassandra")
 
 for comp in ${components[@]}; do
     docker-compose --env-file .env -f $comp/docker-compose.yml down
 done
 
-root_path=/data/docker
+root_path=/data
 data_folders=("kafka" "zookeeper" "cassandra")
 for dir in ${data_folders[@]}; do
     wd=$root_path/$dir
