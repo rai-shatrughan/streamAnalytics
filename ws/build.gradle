@@ -10,11 +10,14 @@ repositories {
 dependencies {
     implementation 'io.vertx:vertx-web'
     implementation 'io.vertx:vertx-kafka-client'
+    implementation 'io.vertx:vertx-micrometer-metrics'
+    implementation 'io.micrometer:micrometer-registry-prometheus:1.5.2'
    // implementation 'ch.qos.logback:logback-classic:1.2.3'
 }
 
 vertx {
     vertxVersion = '4.2.7'
+    launcher = 'sr.me.ws.CustomLauncher'
     mainVerticle = 'sr.me.ws.MainVerticle'
     jvmArgs = ['-Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.SLF4JLogDelegateFactory']
 }
@@ -28,7 +31,7 @@ jib {
         tags = ['v1']
       }
     container {
-      mainClass = "io.vertx.core.Launcher"
+      mainClass = "sr.me.ws.CustomLauncher"
       args =['run', vertx.mainVerticle]
       ports = ['8000']
     }
