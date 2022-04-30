@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  grafana:
+    image: 'grafana/grafana-oss'
+    container_name: grafana
+    volumes:
+      - /data/grafana:/var/lib/grafana
+    ports:
+      - "3100:3000"
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${GRAFANA_IP}
+
+networks:
+  sr_cluster_network:
+    external: true
