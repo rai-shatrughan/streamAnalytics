@@ -1,6 +1,6 @@
 #!/bin/bash
 
-components=("ws" "kafka" "cassandra" "prometheus" "grafana")
+components=("ws" "kafka" "cassandra" "prometheus" "grafana" "jaeger")
 
 for comp in ${components[@]}; do
     docker-compose --env-file .env -f $comp/docker-compose.yml down

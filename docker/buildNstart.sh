@@ -3,7 +3,7 @@
     --subnet=172.18.0.0/23 \
     sr_cluster_network
 
-components=("ws" "kafka" "cassandra" "prometheus" "grafana")
+components=("ws" "kafka" "cassandra" "prometheus" "grafana" "jaeger")
 
 for comp in ${components[@]}; do
     docker-compose --env-file .env -f $comp/docker-compose.yml down
