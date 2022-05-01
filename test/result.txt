@@ -1,0 +1,25 @@
+---
+Start Time -  Sunday 01 May 2022 03:58:53 PM IST
+Running 300s test @ http://172.18.0.21:8000/api/v1/ts
+  4000 goroutine(s) running concurrently
+1068581 requests in 5m1.260171876s, 236.43MB read
+Requests/sec:           3547.04
+Transfer/sec:           803.63KB
+Avg Req Time:           1.127701772s
+Fastest Request:        1.055569ms
+Slowest Request:        3.878798773s
+Number of Errors:       0
+End Time -  Sunday 01 May 2022 04:03:57 PM IST
+---
+Start Time -  Sunday 01 May 2022 03:51:47 PM IST
+Running 300s test @ http://172.18.0.21:8000/api/v1/ts
+  3000 goroutine(s) running concurrently
+913752 requests in 5m0.137308973s, 201.30MB read
+Requests/sec:           3044.45
+Transfer/sec:           686.78KB
+Avg Req Time:           985.400772ms
+Fastest Request:        329.595µs
+Slowest Request:        4.104421792s
+Number of Errors:       0
+End Time -  Sunday 01 May 2022 03:56:50 PM IST
+---
