@@ -17,6 +17,8 @@ import io.jaegertracing.Configuration.ReporterConfiguration;
 import io.jaegertracing.Configuration.SamplerConfiguration;
 import io.jaegertracing.internal.samplers.ConstSampler;
 
+import io.vertx.tracing.zipkin.*;
+
 
 public class CustomLauncher extends Launcher {
 
@@ -27,6 +29,7 @@ public class CustomLauncher extends Launcher {
       .setPrometheusOptions(new VertxPrometheusOptions().setEnabled(true));
 
     options.setMetricsOptions(metricsOptions);
+    options.setTracingOptions(new ZipkinTracingOptions().setServiceName("A cute service"));
     options.setTracingOptions(new OpenTracingOptions(getTracer("sr-me-ws-v1")));
   }
 

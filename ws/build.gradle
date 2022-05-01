@@ -12,6 +12,9 @@ dependencies {
     implementation 'io.vertx:vertx-kafka-client'
     implementation 'io.vertx:vertx-micrometer-metrics'
     implementation 'io.vertx:vertx-opentracing'
+    implementation 'io.vertx:vertx-zipkin'
+    implementation 'io.zipkin.brave:brave:5.6.0'
+    implementation 'io.zipkin.brave:brave-instrumentation-http:5.6.0'
     implementation 'io.micrometer:micrometer-registry-prometheus:1.5.2'
    // implementation 'ch.qos.logback:logback-classic:1.2.3'
 }
@@ -20,7 +23,7 @@ vertx {
     vertxVersion = '4.2.7'
     launcher = 'sr.me.ws.CustomLauncher'
     mainVerticle = 'sr.me.ws.MainVerticle'
-    jvmArgs = ['-Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.SLF4JLogDelegateFactory', '-DJAEGER_AGENT_HOST=172.18.0.91']
+    jvmArgs = ['-Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.SLF4JLogDelegateFactory']
 }
 
 jib {
