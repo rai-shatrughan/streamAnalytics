@@ -3,7 +3,7 @@
     --subnet=172.18.0.0/23 \
     sr_cluster_network
 
-components=("ws" "kafka" "cassandra" "prometheus" "grafana" "jaeger" "zipkin")
+components=("ws" "kafka" "cassandra" "prometheus" "grafana" "jaeger-cassandra-schema")
 
 for comp in ${components[@]}; do
     docker-compose --env-file .env -f $comp/docker-compose.yml down
@@ -32,6 +32,11 @@ for comp in ${components[@]}; do
     docker-compose --env-file .env -f $comp/docker-compose.yml build 
     docker-compose --env-file .env -f $comp/docker-compose.yml up -d
 done
+
+echo "sleep for 120 sec : cassandra schema to be ready for Jeager"
+sleep 120
+docker-compose --env-file .env -f jaeger/docker-compose.yml down
+docker-compose --env-file .env -f jaeger/docker-compose.yml up -d
 
 #configure superset for 1st time usage.
 #bash superset/init.sh

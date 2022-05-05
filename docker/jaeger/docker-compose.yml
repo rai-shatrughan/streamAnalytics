@@ -11,10 +11,13 @@ services:
       - "5778:5778"
       - "4200:16686"
       - "14268:14268"
+    environment:
+      - SPAN_STORAGE_TYPE=cassandra
+      - CASSANDRA_SERVERS=${CASSANDRA_IP}
     networks:
       sr_cluster_network:
         ipv4_address: ${JAEGER_IP}
-
+        
 networks:
   sr_cluster_network:
     external: true

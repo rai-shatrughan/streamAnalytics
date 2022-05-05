@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  jaeger-cassandra-schema:
+    image: 'jaegertracing/jaeger-cassandra-schema:1.33'
+    container_name: jaeger-cassandra-schema
+    environment:
+      - CQLSH_HOST=172.18.0.61
+      - DATACENTER=test
+    networks:
+      sr_cluster_network:
+        
+networks:
+  sr_cluster_network:
+    external: true
