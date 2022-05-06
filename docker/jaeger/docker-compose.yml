@@ -5,11 +5,9 @@ services:
     image: 'jaegertracing/jaeger-agent:latest'
     container_name: jaeger-agent
     ports:
-      - "5775:5775/udp"
       - "6831:6831/udp"
       - "6832:6832/udp"
       - "5778:5778"
-      - "14271:14271"
     environment:
       - REPORTER_GRPC_HOST_PORT=${JAEGER_COLLECTOR_IP}:14250
     networks:
@@ -34,11 +32,11 @@ services:
     image: 'jaegertracing/jaeger-query:latest'
     container_name: jaeger-query
     ports:
-      - "16687:16687"
       - "4200:16686"
     environment:
+      - SPAN_STORAGE_TYPE=cassandra
       - CASSANDRA_SERVERS=${CASSANDRA_IP}
-      - METRICS_STORAGE_TYPE=prometheus
+      - METRICS_BACKEND=prometheus
       - PROMETHEUS_SERVER_URL=http://${PROMETHEUS_IP}:9090 
     networks:
       sr_cluster_network:
@@ -50,7 +48,6 @@ services:
     ports:
       - "14270:14270"
     environment:
-      - SPAN_STORAGE_TYPE=cassandra
       - CASSANDRA_SERVERS=${CASSANDRA_IP}
       - KAFKA_CONSUMER_BROKERS=${KAFKA_IP}:9092
     networks:
