@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  jaeger:
+    image: 'jaegertracing/all-in-one:latest'
+    container_name: jaeger
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "4200:16686"
+      - "14268:14268"
+    environment:
+      - SPAN_STORAGE_TYPE=cassandra
+      - CASSANDRA_SERVERS=${CASSANDRA_IP}
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${JAEGER_IP}
+        
+networks:
+  sr_cluster_network:
+    external: true

@@ -1,23 +1,62 @@
 version: '2'
 
 services:
-  jaeger:
-    image: 'jaegertracing/all-in-one:latest'
-    container_name: jaeger
+  jaeger-agent:
+    image: 'jaegertracing/jaeger-agent:latest'
+    container_name: jaeger-agent
     ports:
       - "5775:5775/udp"
       - "6831:6831/udp"
       - "6832:6832/udp"
       - "5778:5778"
-      - "4200:16686"
+      - "14271:14271"
+    environment:
+      - REPORTER_GRPC_HOST_PORT=${JAEGER_COLLECTOR_IP}:14250
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${JAEGER_AGENT_IP}
+
+  jaeger-collector:
+    image: 'jaegertracing/jaeger-collector:latest'
+    container_name: jaeger-collector
+    ports:
+      - "9411:9411"
+      - "14250:14250"
       - "14268:14268"
+    environment:
+      - SPAN_STORAGE_TYPE=kafka
+      - KAFKA_PRODUCER_BROKERS=${KAFKA_IP}:9092
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${JAEGER_COLLECTOR_IP}        
+
+  jaeger-query:
+    image: 'jaegertracing/jaeger-query:latest'
+    container_name: jaeger-query
+    ports:
+      - "16687:16687"
+      - "4200:16686"
+    environment:
+      - CASSANDRA_SERVERS=${CASSANDRA_IP}
+      - METRICS_STORAGE_TYPE=prometheus
+      - PROMETHEUS_SERVER_URL=http://${PROMETHEUS_IP}:9090 
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${JAEGER_QUERY_IP}    
+
+  jaeger-ingester:
+    image: 'jaegertracing/jaeger-ingester:latest'
+    container_name: jaeger-ingester
+    ports:
+      - "14270:14270"
     environment:
       - SPAN_STORAGE_TYPE=cassandra
       - CASSANDRA_SERVERS=${CASSANDRA_IP}
+      - KAFKA_CONSUMER_BROKERS=${KAFKA_IP}:9092
     networks:
       sr_cluster_network:
-        ipv4_address: ${JAEGER_IP}
-        
+        ipv4_address: ${JAEGER_INGESTER_IP}    
+
 networks:
   sr_cluster_network:
     external: true

@@ -6,6 +6,10 @@ services:
     container_name: grafana
     volumes:
       - /data/grafana:/var/lib/grafana
+      - ./conf/grafana.ini:/etc/grafana/grafana.ini
+      - ./dashboards:/etc/grafana/provisioning/dashboards
+      - ./datasources:/etc/grafana/provisioning/datasources
+      - ./dashboards:/usr/share/grafana/conf/provisioning/dashboards
     ports:
       - "3100:3000"
     networks:
