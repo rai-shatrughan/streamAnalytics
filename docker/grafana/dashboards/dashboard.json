@@ -1,35 +1,4 @@
 {
-    "__inputs": [
-      {
-        "name": "DS_PROMETHEUS",
-        "label": "Prometheus",
-        "description": "",
-        "type": "datasource",
-        "pluginId": "prometheus",
-        "pluginName": "Prometheus"
-      }
-    ],
-    "__elements": [],
-    "__requires": [
-      {
-        "type": "grafana",
-        "id": "grafana",
-        "name": "Grafana",
-        "version": "8.5.1"
-      },
-      {
-        "type": "datasource",
-        "id": "prometheus",
-        "name": "Prometheus",
-        "version": "1.0.0"
-      },
-      {
-        "type": "panel",
-        "id": "timeseries",
-        "name": "Time series",
-        "version": ""
-      }
-    ],
     "annotations": {
       "list": [
         {
@@ -55,14 +24,14 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": null,
+    "id": 2,
     "links": [],
     "liveNow": false,
     "panels": [
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "PBFA97CFB590B2093"
         },
         "fieldConfig": {
           "defaults": {
@@ -136,7 +105,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "PBFA97CFB590B2093"
             },
             "editorMode": "code",
             "exemplar": true,
@@ -152,7 +121,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "PBFA97CFB590B2093"
         },
         "fieldConfig": {
           "defaults": {
@@ -226,7 +195,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "PBFA97CFB590B2093"
             },
             "expr": "rate(vertx_http_server_response_time_seconds_sum[5m])/ rate(vertx_http_server_response_time_seconds_count[5m])",
             "refId": "A"
@@ -238,7 +207,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "PBFA97CFB590B2093"
         },
         "fieldConfig": {
           "defaults": {
@@ -312,7 +281,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "PBFA97CFB590B2093"
             },
             "expr": "vertx_http_server_active_connections",
             "refId": "A"
@@ -324,7 +293,7 @@
       {
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "PBFA97CFB590B2093"
         },
         "fieldConfig": {
           "defaults": {
@@ -398,7 +367,7 @@
           {
             "datasource": {
               "type": "prometheus",
-              "uid": "${DS_PROMETHEUS}"
+              "uid": "PBFA97CFB590B2093"
             },
             "expr": "rate(vertx_http_server_request_bytes_count[$__rate_interval])",
             "refId": "A"
@@ -422,7 +391,7 @@
     "timepicker": {},
     "timezone": "",
     "title": "SR",
-    "uid": "-6wh4ml7k",
-    "version": 8,
+    "uid": "-6wh4ml7q",
+    "version": 1,
     "weekStart": ""
   }
