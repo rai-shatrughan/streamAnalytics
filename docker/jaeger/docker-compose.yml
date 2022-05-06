@@ -10,6 +10,12 @@ services:
       - "5778:5778"
     environment:
       - REPORTER_GRPC_HOST_PORT=${JAEGER_COLLECTOR_IP}:14250
+      - PROCESSOR_JAEGER_BINARY_WORKERS=50
+      - PROCESSOR_JAEGER_COMPACT_WORKERS=50
+      - SPAN_STORAGE_TYPE=kafka
+      - KAFKA_PRODUCER_BROKERS=${KAFKA_IP}:9092   
+      - METRICS_STORAGE_TYPE=prometheus
+      - PROMETHEUS_SERVER_URL=http://${PROMETHEUS_IP}:9090 
     networks:
       sr_cluster_network:
         ipv4_address: ${JAEGER_AGENT_IP}
@@ -24,6 +30,8 @@ services:
     environment:
       - SPAN_STORAGE_TYPE=kafka
       - KAFKA_PRODUCER_BROKERS=${KAFKA_IP}:9092
+      - METRICS_STORAGE_TYPE=prometheus
+      - PROMETHEUS_SERVER_URL=http://${PROMETHEUS_IP}:9090 
     networks:
       sr_cluster_network:
         ipv4_address: ${JAEGER_COLLECTOR_IP}        
@@ -36,7 +44,7 @@ services:
     environment:
       - SPAN_STORAGE_TYPE=cassandra
       - CASSANDRA_SERVERS=${CASSANDRA_IP}
-      - METRICS_BACKEND=prometheus
+      - METRICS_STORAGE_TYPE=prometheus
       - PROMETHEUS_SERVER_URL=http://${PROMETHEUS_IP}:9090 
     networks:
       sr_cluster_network:
