@@ -34,5 +34,6 @@ jib {
       mainClass = "io.vertx.core.Launcher"
       args =['run', vertx.mainVerticle, '-DJAEGER_AGENT_HOST=172.18.0.91']
       ports = ['8000']
+      creationTime = "USE_CURRENT_TIMESTAMP"
     }
 }
