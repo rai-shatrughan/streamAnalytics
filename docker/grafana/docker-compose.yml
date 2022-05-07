@@ -9,7 +9,6 @@ services:
       - ./conf/grafana.ini:/etc/grafana/grafana.ini
       - ./dashboards:/etc/grafana/provisioning/dashboards
       - ./datasources:/etc/grafana/provisioning/datasources
-      - ./dashboards:/var/lib/grafana/dashboards
     ports:
       - "3100:3000"
     networks:
