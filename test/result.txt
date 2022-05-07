@@ -1,4 +1,17 @@
 ---
+#with vertx+Metrics+Jaeger+MainVerticle
+Start Time -  Saturday 07 May 2022 07:58:21 PM IST
+Running 10s test @ http://172.18.0.21:8000/api/v1/ts
+  8000 goroutine(s) running concurrently
+86310 requests in 10.263046198s, 19.01MB read
+Requests/sec:           8409.78
+Transfer/sec:           1.85MB
+Avg Req Time:           951.272964ms
+Fastest Request:        264.561µs
+Slowest Request:        11.765538281s
+Number of Errors:       0
+End Time -  Saturday 07 May 2022 07:58:44 PM IST
+---
 Start Time -  Sunday 01 May 2022 03:58:53 PM IST
 Running 300s test @ http://172.18.0.21:8000/api/v1/ts
   4000 goroutine(s) running concurrently
