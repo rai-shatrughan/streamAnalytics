@@ -55,17 +55,17 @@ public class Handlers {
   }
 
   private static void kafkaWriter(RoutingContext ctx, String topic, String message){
-      System.out.println("Hello Kafka: " );
+      // System.out.println("Hello Kafka: " );
       KafkaProducerRecord<String, String> record = KafkaProducerRecord.create(topic, message + 0);
 
       producer.send(record)
-        .onSuccess(recordMetadata ->
-            System.out.println(
-              "Message " + record.value() + " written on topic=" + recordMetadata.getTopic() +
-              ", partition=" + recordMetadata.getPartition() +
-              ", offset=" + recordMetadata.getOffset()
-            )
-          )
+        // .onSuccess(recordMetadata ->
+        //     System.out.println(
+        //       "Message " + record.value() + " written on topic=" + recordMetadata.getTopic() +
+        //       ", partition=" + recordMetadata.getPartition() +
+        //       ", offset=" + recordMetadata.getOffset()
+        //     )
+        //   )
         .onFailure(cause -> System.out.println("Write failed: " + cause));
 
   }

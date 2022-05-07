@@ -61,10 +61,10 @@ public class CustomLauncher extends Launcher {
     return tracer;
   }
 
-  public static void main(String[] args) {
-    // IMPORTANT
-    // This is required to use our custom launcher.
-    new CustomLauncher().dispatch(args);
-  }
+  // public static void main(String[] args) {
+  //   // IMPORTANT
+  //   // This is required to use our custom launcher.
+  //   new CustomLauncher().dispatch(args);
+  // }
 
 }
