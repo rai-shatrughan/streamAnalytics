@@ -46,7 +46,7 @@ public class MainVerticle extends AbstractVerticle {
 
     SamplerConfiguration samplerConfig = SamplerConfiguration.fromEnv()
     .withType(ConstSampler.TYPE)
-    .withParam(0);
+    .withParam(1);
 
     ReporterConfiguration reporterConfig = ReporterConfiguration.fromEnv()
       .withLogSpans(false);
