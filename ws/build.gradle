@@ -18,6 +18,7 @@ dependencies {
 
 vertx {
     vertxVersion = '4.2.7'
+    launcher = 'sr.me.ws.CustomLauncher'
     mainVerticle = 'sr.me.ws.MainVerticle'
     jvmArgs = ['-Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.SLF4JLogDelegateFactory -DJAEGER_AGENT_HOST=172.18.0.91']
 }
@@ -31,7 +32,7 @@ jib {
         tags = ['v1']
       }
     container {
-      mainClass = "io.vertx.core.Launcher"
+      mainClass = "sr.me.ws.CustomLauncher"
       args =['run', vertx.mainVerticle, '-DJAEGER_AGENT_HOST=172.18.0.91']
       ports = ['8000']
       creationTime = "USE_CURRENT_TIMESTAMP"

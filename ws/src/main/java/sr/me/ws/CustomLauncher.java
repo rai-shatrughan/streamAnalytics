@@ -15,7 +15,7 @@ import io.jaegertracing.Configuration;
 import io.jaegertracing.internal.JaegerTracer;
 import io.jaegertracing.Configuration.ReporterConfiguration;
 import io.jaegertracing.Configuration.SamplerConfiguration;
-import io.jaegertracing.internal.samplers.ConstSampler;
+import io.jaegertracing.internal.samplers.ProbabilisticSampler;
 
 public class CustomLauncher extends Launcher {
 
@@ -46,8 +46,8 @@ public class CustomLauncher extends Launcher {
 
   private static JaegerTracer getTracer(String name){
     SamplerConfiguration samplerConfig = SamplerConfiguration.fromEnv()
-      .withType(ConstSampler.TYPE)
-      .withParam(1);
+    .withType(ProbabilisticSampler.TYPE)
+    .withParam(0.001);
 
     ReporterConfiguration reporterConfig = ReporterConfiguration.fromEnv()
       .withLogSpans(true);
@@ -61,10 +61,10 @@ public class CustomLauncher extends Launcher {
     return tracer;
   }
 
-  // public static void main(String[] args) {
-  //   // IMPORTANT
-  //   // This is required to use our custom launcher.
-  //   new CustomLauncher().dispatch(args);
-  // }
+  public static void main(String[] args) {
+    // IMPORTANT
+    // This is required to use our custom launcher.
+    new CustomLauncher().dispatch(args);
+  }
 
 }
