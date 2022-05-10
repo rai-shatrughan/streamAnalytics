@@ -10,8 +10,12 @@ import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.kafka.client.producer.KafkaProducerRecord;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Handlers {
+
+  private static final Logger logger = LogManager.getLogger();
 
   static KafkaProducer<String, String> producer;
 
@@ -59,14 +63,14 @@ public class Handlers {
       KafkaProducerRecord<String, String> record = KafkaProducerRecord.create(topic, message + 0);
 
       producer.send(record)
-        // .onSuccess(recordMetadata ->
-        //     System.out.println(
-        //       "Message " + record.value() + " written on topic=" + recordMetadata.getTopic() +
-        //       ", partition=" + recordMetadata.getPartition() +
-        //       ", offset=" + recordMetadata.getOffset()
-        //     )
-        //   )
-        .onFailure(cause -> System.out.println("Write failed: " + cause));
+        .onSuccess(recordMetadata ->
+          logger.info(
+                "Message " + record.value() + " written on topic=" + recordMetadata.getTopic() +
+                ", partition=" + recordMetadata.getPartition() +
+                ", offset=" + recordMetadata.getOffset()
+              )
+            )
+        .onFailure(cause -> logger.error("Kafka Write failed: " + cause));
 
   }
 
