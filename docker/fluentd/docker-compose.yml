@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  fluentd:
+    image: 'fluent/fluentd:v1.14-1'
+    container_name: fluentd
+    volumes:
+      - /data/fluentd:/fluentd/log
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${FLUENTD_IP}
+
+networks:
+  sr_cluster_network:
+    external: true

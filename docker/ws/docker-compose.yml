@@ -6,6 +6,12 @@
       image: sr-me-ws:v1
       container_name: sr-me-ws
       hostname: sr-me-ws
+      logging:
+        driver: fluentd
+        options:
+          fluentd-address: ${FLUENTD_IP}:24224
+          tag: "docker.{{.Name}}"
+          tag: "fluent.info"
       expose:
         - "8000"
       networks:
