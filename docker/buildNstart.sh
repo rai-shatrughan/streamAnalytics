@@ -10,7 +10,7 @@ for comp in ${components[@]}; do
 done
 
 root_path=/data
-data_folders=("kafka" "zookeeper" "cassandra" "grafana")
+data_folders=("kafka" "zookeeper" "cassandra" "prometheus" "grafana")
 for dir in ${data_folders[@]}; do
     wd=$root_path/$dir
 
