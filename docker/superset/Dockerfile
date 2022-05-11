@@ -6,6 +6,6 @@ RUN pip install mysqlclient
 # Find which driver you need based on the analytics database
 # you want to connect to here:
 # https://superset.apache.org/installation.html#database-dependencies
-RUN pip install sqlalchemy-redshift
+RUN pip install sqlalchemy-redshift sqlalchemy-solr
 # Switching back to using the `superset` user
 USER superset

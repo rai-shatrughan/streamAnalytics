@@ -7,7 +7,7 @@
       image: superset
       container_name: superset
       volumes:
-        - sr_docker_data:/tmp
+        - /data/superset:/tmp
       command: >
           bash -c "/usr/bin/run-server.sh"
       ports:
@@ -15,10 +15,6 @@
       networks:
         sr_cluster_network:
           ipv4_address: ${SUPERSET_IP}
-    
-  volumes:
-    sr_docker_data:
-      external: true
 
   networks:
     sr_cluster_network:
