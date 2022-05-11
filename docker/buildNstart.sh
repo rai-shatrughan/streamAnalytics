@@ -3,14 +3,14 @@
     --subnet=172.18.0.0/23 \
     sr_cluster_network
 
-components=("fluentd" "kafka" "cassandra" "prometheus" "grafana" "jaeger-cassandra-schema" "ws")
+components=("fluentd" "kafka" "cassandra" "prometheus" "grafana" "jaeger-cassandra-schema" "solr" "ws")
 
 for comp in ${components[@]}; do
     docker-compose --env-file .env -f $comp/docker-compose.yml down
 done
 
 root_path=/data
-data_folders=("fluentd" "kafka" "zookeeper" "cassandra" "prometheus" "grafana")
+data_folders=("fluentd" "kafka" "zookeeper" "cassandra" "prometheus" "grafana" "solr")
 for dir in ${data_folders[@]}; do
     wd=$root_path/$dir
 

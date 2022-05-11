@@ -40,7 +40,7 @@ services:
     image: 'jaegertracing/jaeger-query:latest'
     container_name: jaeger-query
     ports:
-      - "4200:16686"
+      - "16686:16686"
     environment:
       - SPAN_STORAGE_TYPE=cassandra
       - CASSANDRA_SERVERS=${CASSANDRA_IP}

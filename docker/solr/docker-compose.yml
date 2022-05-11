@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+  solr:
+    image: 'solr:8'
+    container_name: solr
+    volumes:
+      - /data/solr:/var/solr
+    ports:
+      - "8983:8983"
+    command:
+      - solr-precreate
+      - gettingstarted
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${SOLR_IP}
+
+networks:
+  sr_cluster_network:
+    external: true
