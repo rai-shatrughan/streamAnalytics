@@ -2,7 +2,7 @@ version: '2'
 
 services:
   fluentd:
-    image: 'fluent/fluentd:v1.14-1'
+    build: .
     container_name: fluentd
     volumes:
       - /data/fluentd:/fluentd/log
