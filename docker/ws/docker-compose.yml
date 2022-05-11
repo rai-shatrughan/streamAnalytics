@@ -11,7 +11,6 @@
         options:
           fluentd-address: ${FLUENTD_IP}:24224
           tag: "docker.{{.Name}}"
-          tag: "fluent.info"
       expose:
         - "8000"
       networks:
