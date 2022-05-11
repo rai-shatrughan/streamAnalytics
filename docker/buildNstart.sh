@@ -39,4 +39,4 @@ docker-compose --env-file .env -f jaeger/docker-compose.yml down
 docker-compose --env-file .env -f jaeger/docker-compose.yml up -d
 
 #configure superset for 1st time usage.
-#bash superset/init.sh
+bash superset/init.sh
