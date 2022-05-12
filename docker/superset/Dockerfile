@@ -1,4 +1,4 @@
-FROM apache/superset
+FROM apache/superset:latest
 # Switching to root to install the required packages
 USER root
 RUN pip install mysqlclient

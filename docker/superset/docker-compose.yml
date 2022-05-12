@@ -4,7 +4,6 @@
   
     superset:
       build: .
-      image: superset
       container_name: superset
       volumes:
         - /data/superset:/tmp
