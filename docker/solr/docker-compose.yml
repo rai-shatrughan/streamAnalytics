@@ -1,19 +1,39 @@
-version: '2'
-
+version: '3.7'
 services:
+
+  solr_zoo:
+    image: zookeeper:3.6.2
+    container_name: solr_zoo
+    restart: always
+    hostname: solr_zoo
+    ports:
+      - 2182:2181
+      - 7007:7000
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=solr_zoo:2888:3888;2182
+      ZOO_4LW_COMMANDS_WHITELIST: mntr, conf, ruok
+      ZOO_CFG_EXTRA: "metricsProvider.className=org.apache.zookeeper.metrics.prometheus.PrometheusMetricsProvider metricsProvider.httpPort=7000 metricsProvider.exportJvmInfo=true"
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${SOLR_ZOO_IP}
+
   solr:
     image: 'solr:8'
     container_name: solr
+    ports:
+     - "8983:8983"
+    environment:
+      - ZK_HOST=${SOLR_ZOO_IP}:2182
     volumes:
       - /data/solr:/var/solr
-    ports:
-      - "8983:8983"
-    command:
-      - solr-precreate
-      - gettingstarted
     networks:
       sr_cluster_network:
         ipv4_address: ${SOLR_IP}
+    depends_on:
+      - solr_zoo
+
+
 
 networks:
   sr_cluster_network:
