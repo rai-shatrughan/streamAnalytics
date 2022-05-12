@@ -6,9 +6,7 @@
       build: .
       container_name: superset
       volumes:
-        - /data/superset:/tmp
-      command: >
-          bash -c "/usr/bin/run-server.sh"
+        - /data/superset:/var/lib/superset
       ports:
         - "8088:8088"
       networks:
