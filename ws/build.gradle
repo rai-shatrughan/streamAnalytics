@@ -21,6 +21,13 @@ dependencies {
     implementation 'io.vertx:vertx-junit5'
 }
 
+task perf(type: JavaExec) {
+    group = "Execution"
+    description = "Run the main class with JavaExecTask"
+    classpath = sourceSets.test.runtimeClasspath
+    main = 'sr.me.ws.TestVerticle'
+}
+
 vertx {
     vertxVersion = '4.2.7'
     launcher = 'sr.me.ws.CustomLauncher'

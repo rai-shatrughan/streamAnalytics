@@ -32,16 +32,16 @@ public class TestVerticle {
   public static void main(String[] args) {
     TestVerticle tv = new TestVerticle();
     Vertx vertx = Vertx.vertx();
-    tv.start(vertx);
 
     final Runnable clientExecutor = new Runnable() {
       public void run() {
+        tv.start(vertx);
         tv.sendTS();
       }
     };
 
-    ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
-    scheduledExecutorService.scheduleAtFixedRate(clientExecutor, 0, 1, TimeUnit.MILLISECONDS);
+    ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+    scheduledExecutorService.scheduleAtFixedRate(clientExecutor, 0, 10, TimeUnit.MILLISECONDS);
   }
 
   public void start(Vertx vertx) {
@@ -56,9 +56,9 @@ public class TestVerticle {
   private void sendTS() {
     request.sendJsonObject(buildTSJson())
       .onSuccess(res -> {
-        System.out.print("Sent request" + res.statusCode() + ":" + res.statusMessage());
+        System.out.print(Instant.now() + " : Resp Code - " + res.statusCode() + " : "+ "Resp Message - " + res.statusMessage() + "\n");
         })
-      .onFailure(err -> {System.out.print("Failed request" + err.getCause());
+      .onFailure(err -> {System.out.print(Instant.now() + " : Failed request" + err.getCause() + "\n");
         });
     }
 
