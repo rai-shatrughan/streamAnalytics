@@ -2,6 +2,12 @@ package sr.me.ws;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.Future;
+import io.vertx.core.VertxOptions;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Executors;
+import io.vertx.core.DeploymentOptions;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.junit5.VertxExtension;
@@ -20,25 +26,31 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Instant;
 
-public class TestVerticle extends AbstractVerticle {
+public class TestVerticle {
   private HttpRequest<JsonObject> request;
 
   public static void main(String[] args) {
+    TestVerticle tv = new TestVerticle();
     Vertx vertx = Vertx.vertx();
-    vertx.deployVerticle(new TestVerticle());
+    tv.start(vertx);
+
+    final Runnable clientExecutor = new Runnable() {
+      public void run() {
+        tv.sendTS();
+      }
+    };
+
+    ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
+    scheduledExecutorService.scheduleAtFixedRate(clientExecutor, 0, 1, TimeUnit.MILLISECONDS);
   }
 
-  @Override
-  public void start() {
-    request = WebClient.create(vertx) // (1)
+  public void start(Vertx vertx) {
+    request = WebClient.create(vertx)
       .post(Constants.WS_SERVER_PORT, Constants.WS_SERVER_IP, "/api/v1/ts")
-      .ssl(false)  // (3)
-      .putHeader("Accept", "application/json")  // (4)
-      .as(BodyCodec.jsonObject()) // (5)
-      .expect(ResponsePredicate.SC_OK);  // (6)
-
-    vertx.setPeriodic(1, id -> sendTS());
-    // sendTS();
+      .ssl(false)
+      .putHeader("Accept", "application/json")
+      .as(BodyCodec.jsonObject())
+      .expect(ResponsePredicate.SC_OK);
   }
 
   private void sendTS() {
