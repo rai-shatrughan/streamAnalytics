@@ -19,14 +19,22 @@ public class TestVerticle extends AbstractVerticle {
   private HttpRequest<JsonObject> request;
 
   public static void main(String[] args) {
-    int workers = 1000;
-    int countVertx = 2000;
-    boolean enableWorker = false;
+    int workers = 1;
+    int countVertx = 4000;
+    boolean enableWorker = true;
     DeploymentOptions depOptions = new DeploymentOptions();
     depOptions.setWorker(true).setWorkerPoolSize(workers);
 
     Vertx vertx = Vertx.vertx();
     for(int i=0; i<=countVertx; i++){
+      try{
+      // ramp up period for all deployments
+      // 10 ms for each - 1 sec 100 deployments max - 5000 deply 50 sec
+        Thread.sleep(10);
+      } catch(Exception e){
+        e.printStackTrace();
+      }
+
       if (enableWorker) {
         vertx.deployVerticle(new TestVerticle(), depOptions);
       } else {
