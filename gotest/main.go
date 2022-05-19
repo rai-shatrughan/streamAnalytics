@@ -12,7 +12,6 @@ import (
 
 	"gotest/loader"
 	"gotest/util"
-	rq "gotest/reqbody"
 )
 
 const APP_VERSION = "0.9"
@@ -125,15 +124,11 @@ func main() {
 		reqBody = string(data)
 	}
 
-	ts := rq.TimeSeries{time.Now().Format(time.RFC3339), "temperature", "celcius", 100}
-	reqBody = ts.GetTSJson()
-	println("TS - ", reqBody)
-
 	loadGen := loader.NewLoadCfg(duration, goroutines, testUrl, reqBody, method, host, header, statsAggregator, timeoutms,
 		allowRedirectsFlag, disableCompression, disableKeepAlive, skipVerify, clientCert, clientKey, caCert, http2)
 
 	for i := 0; i < goroutines; i++ {
-		go loadGen.RunSingleLoadSession()
+		go loadGen.RunSingleLoadSession(i)
 	}
 
 	responders := 0

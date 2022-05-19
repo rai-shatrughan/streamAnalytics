@@ -11,8 +11,10 @@ import (
 	"strings"
 	"sync/atomic"
 	"time"
+	"strconv"
 
-	"gotest/util"
+	"gotest/util"	
+	rq "gotest/reqbody"
 )
 
 const (
@@ -169,7 +171,7 @@ func DoRequest(httpClient *http.Client, header map[string]string, method, host, 
 
 //Requester a go function for repeatedly making requests and aggregating statistics as long as required
 //When it is done, it sends the results using the statsAggregator channel
-func (cfg *LoadCfg) RunSingleLoadSession() {
+func (cfg *LoadCfg) RunSingleLoadSession(i int) {
 	stats := &RequesterStats{MinRequestTime: time.Minute}
 	start := time.Now()
 
@@ -178,9 +180,15 @@ func (cfg *LoadCfg) RunSingleLoadSession() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+		
+	j := 0
 	for time.Since(start).Seconds() <= float64(cfg.duration) && atomic.LoadInt32(&cfg.interrupted) == 0 {
-		respSize, reqDur := DoRequest(httpClient, cfg.header, cfg.method, cfg.host, cfg.testUrl, cfg.reqBody)
+		ts := rq.TimeSeries{time.Now().Format("2006-01-02T15:04:05.000Z"), "temperature_"+strconv.Itoa(i)+"_"+strconv.Itoa(j), "celcius", 100+i+j}
+		reqBody := ts.GetTSJson()
+		println(reqBody)
+		j = j+1
+
+		respSize, reqDur := DoRequest(httpClient, cfg.header, cfg.method, cfg.host, cfg.testUrl, reqBody)
 		if respSize > 0 {
 			stats.TotRespSize += int64(respSize)
 			stats.TotDuration += reqDur
@@ -196,4 +204,12 @@ func (cfg *LoadCfg) RunSingleLoadSession() {
 
 func (cfg *LoadCfg) Stop() {
 	atomic.StoreInt32(&cfg.interrupted, 1)
+}
+
+func (cfg *LoadCfg) SetReqBody(reqBody string) {
+	cfg.reqBody = reqBody
+}
+
+func (cfg *LoadCfg) GetReqBody() string{
+	return cfg.reqBody
 }
