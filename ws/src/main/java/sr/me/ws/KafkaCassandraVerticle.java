@@ -1,4 +1,4 @@
-package me.sr.kafcas;
+package sr.me.ws;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
@@ -15,14 +15,9 @@ import com.datastax.oss.driver.api.core.CqlSessionBuilder;
 import java.util.List;
 import java.util.stream.Collector;
 
-public class MainVerticle extends AbstractVerticle {
+public class KafkaCassandraVerticle extends AbstractVerticle {
 
   Collector<Row, ?, String> listCollector;
-
-  public static void main(String[] args) {
-    Vertx vertx = Vertx.vertx();
-    vertx.deployVerticle(new MainVerticle());
-  }
 
   @Override
   public void start(Promise<Void> startPromise) throws Exception {

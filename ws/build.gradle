@@ -10,6 +10,7 @@ repositories {
 dependencies {
     implementation 'io.vertx:vertx-web'
     implementation 'io.vertx:vertx-kafka-client'
+    implementation 'io.vertx:vertx-cassandra-client'
     implementation 'io.vertx:vertx-micrometer-metrics'
     implementation 'io.vertx:vertx-opentracing'
     implementation 'io.micrometer:micrometer-registry-prometheus:1.5.2'
@@ -28,10 +29,17 @@ task perf(type: JavaExec) {
     main = 'sr.me.ws.TestVerticle'
 }
 
+task kc(type: JavaExec) {
+    group = "Execution"
+    classpath = sourceSets.test.runtimeClasspath
+    main = 'sr.me.ws.CustomLauncher'
+    args = ['run', 'sr.me.ws.KafkaCassandraVerticle', '-DJAEGER_AGENT_HOST=172.18.0.91']
+}
+
 vertx {
     vertxVersion = '4.2.7'
     launcher = 'sr.me.ws.CustomLauncher'
-    mainVerticle = 'sr.me.ws.MainVerticle'
+    mainVerticle = 'sr.me.ws.WSVerticle'
     jvmArgs = ['-Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.SLF4JLogDelegateFactory -DJAEGER_AGENT_HOST=172.18.0.91']
 }
 
@@ -45,7 +53,7 @@ jib {
       }
     container {
       mainClass = "sr.me.ws.CustomLauncher"
-      args =['run', vertx.mainVerticle, '-DJAEGER_AGENT_HOST=172.18.0.91']
+      args =['run', 'sr.me.ws.WSVerticle', '-DJAEGER_AGENT_HOST=172.18.0.91']
       ports = ['8000']
       creationTime = "USE_CURRENT_TIMESTAMP"
     }

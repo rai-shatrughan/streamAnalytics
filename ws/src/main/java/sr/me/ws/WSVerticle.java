@@ -8,7 +8,7 @@ import io.vertx.ext.web.Route;
 import io.vertx.core.http.HttpServer;
 import io.vertx.micrometer.PrometheusScrapingHandler;
 
-public class MainVerticle extends AbstractVerticle {
+public class WSVerticle extends AbstractVerticle {
 
   int port = Constants.WS_SERVER_PORT;
   String defaultPath = "/";
