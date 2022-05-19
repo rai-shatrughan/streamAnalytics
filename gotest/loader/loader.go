@@ -12,8 +12,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	// "github.com/tsliwowicz/go-wrk/util"
-	"util"
+	"gotest/util"
 )
 
 const (
