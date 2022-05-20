@@ -60,7 +60,7 @@ public class Handlers {
 
   private static void kafkaWriter(RoutingContext ctx, String topic, String message){
       // System.out.println("Hello Kafka: " );
-      KafkaProducerRecord<String, String> record = KafkaProducerRecord.create(topic, message + 0);
+      KafkaProducerRecord<String, String> record = KafkaProducerRecord.create(topic, message);
 
       producer.send(record)
         .onSuccess(recordMetadata ->
