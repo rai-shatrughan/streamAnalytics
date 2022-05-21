@@ -1,0 +1,258 @@
+version: "2.2"
+
+services:
+
+  fluentd:
+    build: ./fluentd
+    container_name: fluentd
+    volumes:
+      - /data/fluentd:/fluentd/log
+      - ./fluentd/fluent.conf:/fluentd/etc/fluent.conf
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${FLUENTD_IP}
+  
+  cassandra:
+    image: cassandra:latest
+    container_name: cassandra
+    hostname: cassandra
+    expose:
+      - "7000"
+      - "9042"
+    volumes:
+      - /data/cassandra:/var/lib/cassandra
+    environment:
+      - CASSANDRA_LISTEN_ADDRESS=${CASSANDRA_IP}
+      - CASSANDRA_BROADCAST_ADDRESS=${CASSANDRA_IP}
+    healthcheck:
+      test: "cqlsh"
+      interval: 2s
+      timeout: 60s
+      retries: 30
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${CASSANDRA_IP}
+
+  grafana:
+    image: 'grafana/grafana-oss'
+    container_name: grafana
+    volumes:
+      - /data/grafana:/var/lib/grafana
+      - ./grafana/conf/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+    ports:
+      - "3100:3000"
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${GRAFANA_IP}
+
+  jaeger-cassandra-schema:
+    image: 'jaegertracing/jaeger-cassandra-schema:1.33'
+    container_name: jaeger-cassandra-schema
+    environment:
+      - CQLSH_HOST=${CASSANDRA_IP}
+      - DATACENTER=test
+    networks:
+      sr_cluster_network:
+    depends_on:
+      "cassandra":
+        condition: service_healthy
+
+  jaeger-agent:
+    image: 'jaegertracing/jaeger-agent:latest'
+    container_name: jaeger-agent
+    restart: always
+    ports:
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+    environment:
+      - REPORTER_GRPC_HOST_PORT=${JAEGER_COLLECTOR_IP}:14250
+      - PROCESSOR_JAEGER_BINARY_WORKERS=50
+      - PROCESSOR_JAEGER_COMPACT_WORKERS=50
+      - SPAN_STORAGE_TYPE=kafka
+      - KAFKA_PRODUCER_BROKERS=${KAFKA_IP}:9092   
+      - METRICS_STORAGE_TYPE=prometheus
+      - PROMETHEUS_SERVER_URL=http://${PROMETHEUS_IP}:9090 
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${JAEGER_AGENT_IP}
+    depends_on:
+      "cassandra":
+        condition: service_healthy
+
+  jaeger-collector:
+    image: 'jaegertracing/jaeger-collector:latest'
+    container_name: jaeger-collector
+    restart: always
+    ports:
+      - "9411:9411"
+      - "14250:14250"
+      - "14268:14268"
+    environment:
+      - SPAN_STORAGE_TYPE=kafka
+      - KAFKA_PRODUCER_BROKERS=${KAFKA_IP}:9092
+      - METRICS_STORAGE_TYPE=prometheus
+      - PROMETHEUS_SERVER_URL=http://${PROMETHEUS_IP}:9090 
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${JAEGER_COLLECTOR_IP}
+    depends_on:
+      "cassandra":
+        condition: service_healthy   
+
+  jaeger-query:
+    image: 'jaegertracing/jaeger-query:latest'
+    container_name: jaeger-query
+    restart: always
+    ports:
+      - "16686:16686"
+    environment:
+      - SPAN_STORAGE_TYPE=cassandra
+      - CASSANDRA_SERVERS=${CASSANDRA_IP}
+      - METRICS_STORAGE_TYPE=prometheus
+      - PROMETHEUS_SERVER_URL=http://${PROMETHEUS_IP}:9090 
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${JAEGER_QUERY_IP}    
+    depends_on:
+      "cassandra":
+        condition: service_healthy
+      
+  jaeger-ingester:
+    image: 'jaegertracing/jaeger-ingester:latest'
+    container_name: jaeger-ingester
+    restart: always
+    ports:
+      - "14270:14270"
+    environment:
+      - CASSANDRA_SERVERS=${CASSANDRA_IP}
+      - KAFKA_CONSUMER_BROKERS=${KAFKA_IP}:9092
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${JAEGER_INGESTER_IP}    
+    depends_on:
+      "cassandra":
+        condition: service_healthy
+
+
+
+  kafka_zookeeper:
+    image: docker.io/bitnami/zookeeper:3.8
+    container_name: kafka_zookeeper
+    hostname: kafka_zookeeper
+    expose:
+      - "2181"
+      - "2888"
+      - "3888"
+    volumes:
+      - /data/zookeeper:/bitnami
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${ZOOKEEPER_IP}
+
+  kafka:
+    image: docker.io/bitnami/kafka:3.1
+    container_name: kafka
+    hostname: kafka
+    expose:
+      - "9092"
+    volumes:
+      - /data/kafka:/bitnami
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://${KAFKA_IP}:9092
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=kafka_zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${KAFKA_IP}
+    depends_on:
+      - kafka_zookeeper
+
+  prometheus:
+    image: 'prom/prometheus'
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /data/prometheus:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${PROMETHEUS_IP}
+
+  solr_zoo:
+    image: zookeeper:3.6.2
+    container_name: solr_zoo
+    restart: always
+    hostname: solr_zoo
+    ports:
+      - 2182:2181
+      - 7007:7000
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=solr_zoo:2888:3888;2182
+      ZOO_4LW_COMMANDS_WHITELIST: mntr, conf, ruok
+      ZOO_CFG_EXTRA: "metricsProvider.className=org.apache.zookeeper.metrics.prometheus.PrometheusMetricsProvider metricsProvider.httpPort=7000 metricsProvider.exportJvmInfo=true"
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${SOLR_ZOO_IP}
+
+  solr:
+    image: 'solr:8'
+    container_name: solr
+    ports:
+     - "8983:8983"
+    environment:
+      - ZK_HOST=${SOLR_ZOO_IP}:2182
+    volumes:
+      - /data/solr:/var/solr
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${SOLR_IP}
+    depends_on:
+      - solr_zoo
+
+  superset:
+    build: ./superset
+    container_name: superset
+    volumes:
+      - /data/superset:/var/lib/superset
+    ports:
+      - "8088:8088"
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${SUPERSET_IP}
+
+  sr-me-ws:
+    image: sr-me-ws:v1
+    container_name: sr-me-ws
+    hostname: sr-me-ws
+    restart: always
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: ${FLUENTD_IP}:24224
+        tag: "docker.{{.Name}}"
+    expose:
+      - "8000"
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${SR_WS_IP}
+    depends_on:
+      "cassandra":
+        condition: service_healthy
+
+
+networks:
+  sr_cluster_network:
+    external: true
