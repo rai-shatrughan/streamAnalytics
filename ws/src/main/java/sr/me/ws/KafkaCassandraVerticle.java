@@ -6,6 +6,7 @@ import io.vertx.core.Vertx;
 import io.vertx.kafka.client.consumer.KafkaConsumer;
 import io.vertx.cassandra.CassandraClientOptions;
 import io.vertx.cassandra.CassandraClient;
+import io.vertx.core.json.JsonObject;
 
 import com.datastax.oss.driver.api.core.cql.*;
 import com.datastax.oss.driver.api.core.session.SessionBuilder;
@@ -38,16 +39,25 @@ public class KafkaCassandraVerticle extends AbstractVerticle {
       logger.info("Processing key=" + record.key() + ",value=" + record.value() +
         ",partition=" + record.partition() + ",offset=" + record.offset());
 
+        JsonObject jo = new JsonObject(record.value());
+        String columns = " (name, timestamp, property, unit, value) ";
+        String values = " (" +
+            "'" + jo.getString("name") + "'" + "," +
+            "'" + jo.getString("timestamp") + "'" + "," +
+            "'" + jo.getString("property") + "'" + "," +
+            "'" + jo.getString("unit") + "'" + "," +
+                  jo.getDouble("value") +
+            ")";
+
+
       BatchStatement batchStatement = BatchStatement.newInstance(BatchType.LOGGED)
-        .add(SimpleStatement.newInstance("INSERT INTO NAMES (name) VALUES ('Pavel')"))
-        .add(SimpleStatement.newInstance("INSERT INTO NAMES (name) VALUES ('Thomas')"))
-        .add(SimpleStatement.newInstance("INSERT INTO NAMES (name) VALUES ('Julien')"));
+        .add(SimpleStatement.newInstance("INSERT INTO " + Constants.CASSANDRA_TABLE_TS + columns + " VALUES " + values));
 
       cassandraClient.execute(batchStatement, result -> {
         if (result.succeeded()) {
-          System.out.println("The given batch executed successfully");
+          logger.info("The given batch executed successfully");
         } else {
-          System.out.println("Unable to execute the batch");
+          logger.error("Unable to execute the batch");
           result.cause().printStackTrace();
         }
       });
@@ -79,8 +89,6 @@ public class KafkaCassandraVerticle extends AbstractVerticle {
       .setKeyspace(Constants.CASSANDRA_KEYSPACE_TS);
 
     cassandraClient = CassandraClient.create(vertx, options);
-    createKeyspace();
-    createTable();
   }
 
   public void getCassandraResult(){
