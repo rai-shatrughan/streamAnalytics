@@ -183,7 +183,7 @@ func (cfg *LoadCfg) RunSingleLoadSession(i int) {
 		
 	j := 0
 	for time.Since(start).Seconds() <= float64(cfg.duration) && atomic.LoadInt32(&cfg.interrupted) == 0 {
-		ts := rq.TimeSeries{time.Now().Format("2006-01-02T15:04:05.000Z"), "temperature_"+strconv.Itoa(i)+"_"+strconv.Itoa(j), "celcius", 100+i+j}
+		ts := rq.TimeSeries{"in_pun_vimanNagar_signal", time.Now().Format("2006-01-02T15:04:05.000Z"), "temperature_"+strconv.Itoa(i)+"_"+strconv.Itoa(j), "celcius", 100+i+j}
 		reqBody := ts.GetTSJson()
 		//println(reqBody)
 		j = j+1

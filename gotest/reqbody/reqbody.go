@@ -6,6 +6,7 @@ import (
 )
 
 type TimeSeries struct {
+	Name	string	`json:"name"`
     Timestamp	string	`json:"timestamp"`
     Property	string	`json:"property"`
     Unit	string	`json:"unit"`

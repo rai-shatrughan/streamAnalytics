@@ -27,3 +27,4 @@ docker-compose --env-file .env -f docker-compose.yml up -d
 #configure for 1st time usage.
 bash superset/init.sh
 bash solr/init.sh
+bash cassandra/init.sh
