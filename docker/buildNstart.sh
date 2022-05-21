@@ -24,5 +24,6 @@ done
 docker-compose --env-file .env -f docker-compose.yml build 
 docker-compose --env-file .env -f docker-compose.yml up -d
 
-#configure superset for 1st time usage.
+#configure for 1st time usage.
 bash superset/init.sh
+bash solr/init.sh
