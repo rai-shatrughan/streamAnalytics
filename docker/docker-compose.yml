@@ -28,7 +28,7 @@ services:
       - CASSANDRA_LISTEN_ADDRESS=${CASSANDRA_IP}
       - CASSANDRA_BROADCAST_ADDRESS=${CASSANDRA_IP}
     healthcheck:
-      test: "cqlsh"
+      test: "nodetool info || exit 1"
       interval: 2s
       timeout: 60s
       retries: 30
