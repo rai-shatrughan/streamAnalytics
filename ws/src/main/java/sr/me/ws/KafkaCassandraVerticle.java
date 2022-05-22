@@ -4,6 +4,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.kafka.client.consumer.KafkaConsumer;
+import io.vertx.kafka.client.consumer.KafkaConsumerRecord;
 import io.vertx.cassandra.CassandraClientOptions;
 import io.vertx.cassandra.CassandraClient;
 import io.vertx.core.json.JsonObject;
@@ -13,6 +14,8 @@ import com.datastax.oss.driver.api.core.session.SessionBuilder;
 import com.datastax.oss.protocol.internal.response.result.SetKeyspace;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.CqlSessionBuilder;
+import com.datastax.oss.driver.api.core.cql.SimpleStatementBuilder;
+import com.datastax.oss.driver.api.core.cql.SimpleStatement;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +24,7 @@ import java.util.List;
 import java.util.stream.Collector;
 import java.util.HashMap;
 import java.util.Map;
+import java.time.Duration;
 import java.lang.StringBuilder;
 
 public class KafkaCassandraVerticle extends AbstractVerticle {
@@ -35,35 +39,36 @@ public class KafkaCassandraVerticle extends AbstractVerticle {
     initKafka(vertx);
     initCassandra(vertx);
 
-    consumer.handler(record -> {
-      logger.info("Processing key=" + record.key() + ",value=" + record.value() +
-        ",partition=" + record.partition() + ",offset=" + record.offset());
+  consumer
+  .subscribe(Constants.KAFKA_TS_TOPIC)
+  .onSuccess(v -> {
+    logger.info("Consumer subscribed");
 
-        JsonObject jo = new JsonObject(record.value());
-        String columns = " (name, timestamp, property, unit, value) ";
-        String values = " (" +
-            "'" + jo.getString("name") + "'" + "," +
-            "'" + jo.getString("timestamp") + "'" + "," +
-            "'" + jo.getString("property") + "'" + "," +
-            "'" + jo.getString("unit") + "'" + "," +
-                  jo.getDouble("value") +
-            ")";
+    // Let's poll every 200 ms
+    vertx.setPeriodic(200, timerId ->
+      consumer
+        .poll(Duration.ofMillis(100))
+        .onSuccess(records -> {
+          BatchStatement batchStatement = BatchStatement.newInstance(BatchType.LOGGED);
+          for (int i = 0; i < records.size(); i++) {
+            KafkaConsumerRecord<String, String> record = records.recordAt(i);
+            logger.info("Processing partition=" + record.partition() + " ,offset=" + record.offset());
+            logger.debug("key=" + record.key() + ",value=" + record.value() +
+              ",partition=" + record.partition() + ",offset=" + record.offset());
 
+            batchStatement.add(SimpleStatement.newInstance("INSERT INTO " + Constants.CASSANDRA_TABLE_TS + " JSON '" + record.value() + "'"));
+          }
+          executeBatch(batchStatement);
+        })
+        .onFailure(cause -> {
+          logger.error("Something went wrong when polling " + cause.toString());
+          cause.printStackTrace();
 
-      BatchStatement batchStatement = BatchStatement.newInstance(BatchType.LOGGED)
-        .add(SimpleStatement.newInstance("INSERT INTO " + Constants.CASSANDRA_TABLE_TS + columns + " VALUES " + values));
-
-      cassandraClient.execute(batchStatement, result -> {
-        if (result.succeeded()) {
-          logger.info("The given batch executed successfully");
-        } else {
-          logger.error("Unable to execute the batch");
-          result.cause().printStackTrace();
-        }
-      });
-    });
-
-    consumer.subscribe(Constants.KAFKA_TS_TOPIC);
+          // Stop polling if something went wrong
+          // vertx.cancelTimer(timerId);
+        })
+    );
+  });
 
   }
 
@@ -139,4 +144,14 @@ public class KafkaCassandraVerticle extends AbstractVerticle {
     });
 }
 
+  public void executeBatch(BatchStatement batchStatement) {
+         cassandraClient.execute(batchStatement, result -> {
+                if (result.succeeded()) {
+                  logger.info("The given batch executed successfully");
+                } else {
+                  logger.error("Unable to execute the batch");
+                  result.cause().printStackTrace();
+                }
+              });
+  }
 }
