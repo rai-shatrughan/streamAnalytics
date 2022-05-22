@@ -8,6 +8,7 @@ import io.vertx.kafka.client.consumer.KafkaConsumerRecord;
 import io.vertx.cassandra.CassandraClientOptions;
 import io.vertx.cassandra.CassandraClient;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.tracing.TracingPolicy;
 
 import com.datastax.oss.driver.api.core.cql.*;
 import com.datastax.oss.driver.api.core.session.SessionBuilder;
@@ -49,16 +50,20 @@ public class KafkaCassandraVerticle extends AbstractVerticle {
       consumer
         .poll(Duration.ofMillis(100))
         .onSuccess(records -> {
-          BatchStatement batchStatement = BatchStatement.newInstance(BatchType.LOGGED);
-          for (int i = 0; i < records.size(); i++) {
-            KafkaConsumerRecord<String, String> record = records.recordAt(i);
-            logger.info("Processing partition=" + record.partition() + " ,offset=" + record.offset());
-            logger.debug("key=" + record.key() + ",value=" + record.value() +
-              ",partition=" + record.partition() + ",offset=" + record.offset());
+          if (records.size() > 0) {
+            BatchStatement batchStatement = BatchStatement.newInstance(BatchType.LOGGED);
+            for (int i = 0; i < records.size(); i++) {
+              KafkaConsumerRecord<String, String> record = records.recordAt(i);
+              logger.info("Processing partition=" + record.partition() + " ,offset=" + record.offset());
+              logger.debug("key=" + record.key() + ",value=" + record.value() +
+                ",partition=" + record.partition() + ",offset=" + record.offset());
 
-            batchStatement.add(SimpleStatement.newInstance("INSERT INTO " + Constants.CASSANDRA_TABLE_TS + " JSON '" + record.value() + "'"));
+              batchStatement.add(SimpleStatement.newInstance("INSERT INTO " + Constants.CASSANDRA_TABLE_TS + " JSON '" + record.value() + "'"));
+            }
+            executeBatch(batchStatement);
+          } else {
+            logger.info("No New Records in Kafka");
           }
-          executeBatch(batchStatement);
         })
         .onFailure(cause -> {
           logger.error("Something went wrong when polling " + cause.toString());
@@ -90,6 +95,7 @@ public class KafkaCassandraVerticle extends AbstractVerticle {
     builder.withLocalDatacenter(Constants.CASSANDRA_DATACENTER);
 
     CassandraClientOptions options = new CassandraClientOptions(builder)
+      .setTracingPolicy(TracingPolicy.ALWAYS)
       .addContactPoint(Constants.CASSANDRA_CONTACT_IP, Constants.CASSANDRA_CONTACT_PORT)
       .setKeyspace(Constants.CASSANDRA_KEYSPACE_TS);
 
