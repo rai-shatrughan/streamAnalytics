@@ -16,7 +16,7 @@ services:
         ipv4_address: ${FLUENTD_IP}
   
   cassandra:
-    image: cassandra:latest
+    image: cassandra:4.0.4
     container_name: cassandra
     hostname: cassandra
     expose:
@@ -37,7 +37,7 @@ services:
         ipv4_address: ${CASSANDRA_IP}
 
   grafana:
-    image: 'grafana/grafana-oss'
+    image: 'grafana/grafana-oss:8.5.3'
     container_name: grafana
     volumes:
       - /data/grafana:/var/lib/grafana
@@ -63,7 +63,7 @@ services:
         condition: service_healthy
 
   jaeger-agent:
-    image: 'jaegertracing/jaeger-agent:latest'
+    image: 'jaegertracing/jaeger-agent:1.34'
     container_name: jaeger-agent
     restart: always
     ports:
@@ -86,7 +86,7 @@ services:
         condition: service_healthy
 
   jaeger-collector:
-    image: 'jaegertracing/jaeger-collector:latest'
+    image: 'jaegertracing/jaeger-collector:1.34'
     container_name: jaeger-collector
     restart: always
     ports:
@@ -106,7 +106,7 @@ services:
         condition: service_healthy   
 
   jaeger-query:
-    image: 'jaegertracing/jaeger-query:latest'
+    image: 'jaegertracing/jaeger-query:1.34'
     container_name: jaeger-query
     restart: always
     ports:
@@ -124,7 +124,7 @@ services:
         condition: service_healthy
       
   jaeger-ingester:
-    image: 'jaegertracing/jaeger-ingester:latest'
+    image: 'jaegertracing/jaeger-ingester:1.34'
     container_name: jaeger-ingester
     restart: always
     ports:
@@ -179,7 +179,7 @@ services:
       - kafka_zookeeper
 
   prometheus:
-    image: 'prom/prometheus'
+    image: 'prom/prometheus:v2.35.0'
     container_name: prometheus
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
