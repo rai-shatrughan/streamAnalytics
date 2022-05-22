@@ -252,6 +252,21 @@ services:
       "cassandra":
         condition: service_healthy
 
+  sr-me-kafcas:
+      image: sr-me-kafcas:v1
+      container_name: sr-me-kafcas
+      hostname: sr-me-kafcas
+      restart: always
+      logging:
+        driver: fluentd
+        options:
+          fluentd-address: ${FLUENTD_IP}:24224
+          tag: "docker.{{.Name}}"
+      networks:
+        sr_cluster_network:
+      depends_on:
+        "cassandra":
+          condition: service_healthy
 
 networks:
   sr_cluster_network:
