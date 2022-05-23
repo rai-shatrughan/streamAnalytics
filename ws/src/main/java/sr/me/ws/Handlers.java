@@ -26,14 +26,14 @@ public class Handlers {
     config.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
     config.put("acks", "1");
     producer = KafkaProducer.create(vertx, config);
-    System.out.println("Initializing Kafka Producer");
+    logger.info("Initializing Kafka Producer");
   }
 
   public void serverHandler(int port, AsyncResult<HttpServer> res) {
     if (res.succeeded()) {
-      System.out.println("Server is now listening! - "+ port);
+      logger.info("Server is now listening! - "+ port);
     } else {
-      System.out.println("Failed to bind!");
+      logger.info("Failed to start Web server!");
     }
   }
 
