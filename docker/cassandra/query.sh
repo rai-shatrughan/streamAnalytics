@@ -1,0 +1,1 @@
+docker exec -it cassandra bash -c "cqlsh -e \"SELECT count(*) from tsks.tstable;\""
