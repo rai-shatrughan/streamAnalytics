@@ -264,6 +264,7 @@ services:
           tag: "docker.{{.Name}}"
       networks:
         sr_cluster_network:
+          ipv4_address: ${SR_KAFCAS_IP}
       depends_on:
         "cassandra":
           condition: service_healthy
