@@ -4,6 +4,8 @@
 #mvnw compile jib:buildTar
 #mvnw exec:java
 
+docker pull eclipse-temurin:11-jre
+
 bash gradlew clean jibDockerBuild \
     -Djib.from.image=docker://eclipse-temurin:11-jre \
     -Djib.to.image=sr-me-kafcas \
