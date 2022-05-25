@@ -7,7 +7,7 @@ USER root
 # you may customize including plugins as you wish
 RUN apk add --no-cache --update --virtual .build-deps \
         sudo build-base ruby-dev \
- && sudo gem install fluent-plugin-output-solr \
+ && sudo gem install fluent-plugin-output-solr fluent-plugin-grok-parser fluent-plugin-docker\
  && sudo gem sources --clear-all \
  && apk del .build-deps \
  && rm -rf /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem
