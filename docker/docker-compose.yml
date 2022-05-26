@@ -233,6 +233,21 @@ services:
       sr_cluster_network:
         ipv4_address: ${SUPERSET_IP}
 
+  zeppelin:
+    image: apache/zeppelin:0.10.1
+    container_name: zeppelin
+    volumes:
+      - /data/zeppelin/:/logs
+      - /data/zeppelin/:/notebook
+    ports:
+      - "8080:8080"
+    environment:
+      ZEPPELIN_LOG_DIR: /logs
+      ZEPPELIN_NOTEBOOK_DIR: /notebook
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${ZEPPELIN_IP}    
+
   sr-me-ws:
     image: sr-me-ws:v1
     container_name: sr-me-ws

@@ -6,7 +6,7 @@
 docker-compose --env-file .env -f docker-compose.yml down
 
 root_path=/data
-data_folders=("fluentd" "kafka" "zookeeper" "cassandra" "prometheus" "grafana" "superset" "solr")
+data_folders=("fluentd" "kafka" "zookeeper" "cassandra" "prometheus" "grafana" "superset" "zeppelin" "solr")
 for dir in ${data_folders[@]}; do
     wd=$root_path/$dir
 
