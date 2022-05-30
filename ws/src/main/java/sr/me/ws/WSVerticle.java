@@ -25,6 +25,9 @@ public class WSVerticle extends AbstractVerticle {
 
 		Handlers handlers = new Handlers(vertx);
 
+    // serve static files from src/main/resources/webroot
+    router.get().handler(StaticHandler.create());
+
 		Route defaultRoute = router.route(defaultPath);
 		Route timeSeriesRoute = router.route(basePath + timeSeriesPath);
 		Route streamRoute = router.route(basePath + streamPath);

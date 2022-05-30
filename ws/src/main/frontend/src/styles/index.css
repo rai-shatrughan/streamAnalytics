@@ -1,0 +1,9 @@
+.body {
+  color: red;
+  background: url('../images/icon.png');
+}
+
+#main {
+  width: 400px;
+  height: 300px;
+}
