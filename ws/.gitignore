@@ -179,7 +179,10 @@ gradle-app.setting
 nbproject/private/
 buildTool/
 nbbuild/
-dist/
+
+#un-comment for webpack dist folder
+#dist/
+
 nbdist/
 .nb-gradle/
 
