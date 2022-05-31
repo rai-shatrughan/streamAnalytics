@@ -1,0 +1,178 @@
+[
+  {
+    "name": "Java",
+    "value": 7,
+    "children": [
+      {
+        "name": "Vertx",
+        "value": 5,
+        "children": [
+          {
+            "name":"Kafka",
+            "value": 1,
+            "itemStyle": {
+              "color": "red"
+            }
+          },
+          {
+            "name":"Cassandra",
+            "value": 2,
+            "itemStyle": {
+              "color": "black"
+            }
+          },
+          {
+            "name":"Logging",
+            "value": 1,
+            "children":[
+              {"name": "log4j2",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "name":"OpenTelemetry",
+            "value": 2
+          },
+          {
+            "name":"Tracing",
+            "value": 1,
+            "children":[
+              {"name": "Jaeger",
+                "value": "1"
+              }
+            ]
+          },
+          {
+            "name":"Metrics",
+            "value": 1,
+            "children":[
+              {"name": "Prometheus",
+                "value": "1"
+              }
+            ]
+          }
+        ],
+        "itemStyle": "item1"
+      }
+    ],
+    "itemStyle": "item1"
+  },
+  {
+    "name": "Golang",
+    "value": 7,
+    "children": [
+      {
+        "name":"Concurrency",
+        "value": 3,
+        "children": [
+          {
+            "name":"channels",
+            "value": 4
+          },
+          {
+            "name":"goroutines",
+            "value": 4
+          }
+        ],
+        "itemStyle": "item5"
+      },
+      {
+        "name":"grpc",
+        "value": 3
+      },
+      {
+          "name":"openapi",
+          "value": 3
+      },
+      {
+          "name":"zap",
+          "value": 3
+      },
+      {
+          "name":"kafka-go",
+          "value": 3
+      },
+      {
+          "name":"etcd",
+          "value": 3
+      },
+      {
+          "name":"m3db.io",
+          "value": 3
+      }
+    ],
+    "itemStyle": "item2"
+  },
+  {
+    "name": "Python",
+    "value": 3,
+    "children": [
+      {
+        "name": "ML",
+        "children": [
+          {
+            "name": "scikit",
+            "value": 2,
+            "itemStyle": "item3"
+          },
+          {
+            "name": "numpy",
+            "value": 2,
+            "itemStyle": "item3"
+          },
+          {
+            "name": "pandas",
+            "value": 1,
+            "itemStyle": "item3"
+          },
+          {
+            "name": "pytorch",
+            "value": 1,
+            "itemStyle": "item3"
+          }
+        ],
+        "itemStyle": "item3"
+      }
+    ],
+    "itemStyle": "item3"
+  },
+  {
+    "name": "JavaScript",
+    "value": 3,
+    "children": [
+      {
+        "name": "Web",
+        "value": 4,
+        "children": [
+          {
+            "name": "react",
+            "value": 2,
+            "itemStyle": "item3"
+          },
+          {
+            "name": "purecss",
+            "value": 2,
+            "itemStyle": "item3"
+          },
+          {
+            "name": "echarts",
+            "value": 1,
+            "itemStyle": "item3"
+          },
+          {
+            "name": "cordova",
+            "value": 2,
+            "itemStyle": "item3"
+          }
+        ],
+        "itemStyle": "item3"
+      }
+    ],
+    "itemStyle": "item4"
+  }
+]
+
+
+
+

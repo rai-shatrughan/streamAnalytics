@@ -6,6 +6,7 @@ import $ from "jquery";
 import drawMe from './dot';
 import drawIntro from './intro';
 import drawSkills from './skills';
+import drawTools from './tools';
 
 
 // $(document).ready( function () {
@@ -16,6 +17,7 @@ import drawSkills from './skills';
 $(function(){
   drawIntro();
   drawSkills();
+  drawTools();
   // drawMe();
 });
 
