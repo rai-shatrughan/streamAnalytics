@@ -9,21 +9,56 @@ export default function drawTools(){
   const data = json;
 
   option = {
-    visualMap: {
-      type: 'continuous',
-      min: 0,
-      max: 10,
-      inRange: {
-        color: ['#2F93C8', '#AEC48F', '#FFDB5C', '#F98862', '#975e6d', '#f99e1c', '#f7f1bd']
+    title: {
+      text: 'Tools',
+      textStyle: {
+        fontSize: 14,
+        align: 'center'
+      },
+      subtextStyle: {
+        align: 'center'
       }
     },
     series: {
       type: 'sunburst',
       data: data,
-      radius: [0, '100%'],
-      label: {
-        rotate: 'radial'
-      }
+      radius: [0, '90%'],
+      sort: undefined,
+      emphasis: {
+        focus: 'ancestor'
+      },
+      levels: [
+        {},
+        {
+          r0: '15%',
+          r: '35%',
+          itemStyle: {
+            borderWidth: 2
+          },
+          label: {
+            rotate: 'tangential'
+          }
+        },
+        {
+          r0: '35%',
+          r: '70%',
+          label: {
+            align: 'right'
+          }
+        },
+        {
+          r0: '70%',
+          r: '72%',
+          label: {
+            position: 'outside',
+            padding: 3,
+            silent: false
+          },
+          itemStyle: {
+            borderWidth: 3
+          }
+        }
+      ]
     }
   };
 

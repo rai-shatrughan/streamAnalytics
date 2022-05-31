@@ -1,178 +1,220 @@
-[
-  {
-    "name": "Java",
-    "value": 7,
-    "children": [
+[{
+  "name": "Java",
+  "value": 7,
+  "children": [{
+    "name": "Vertx",
+    "value": 5,
+    "itemStyle": {
+      "color": "blue"
+    },
+    "children": [{
+        "name": "Kafka",
+        "value": 2,
+        "itemStyle": {
+          "color": "red"
+        }
+      },
       {
-        "name": "Vertx",
-        "value": 5,
-        "children": [
-          {
-            "name":"Kafka",
-            "value": 1,
-            "itemStyle": {
-              "color": "red"
-            }
-          },
-          {
-            "name":"Cassandra",
-            "value": 2,
-            "itemStyle": {
-              "color": "black"
-            }
-          },
-          {
-            "name":"Logging",
-            "value": 1,
-            "children":[
-              {"name": "log4j2",
-                "value": "1"
-              }
-            ]
-          },
-          {
-            "name":"OpenTelemetry",
-            "value": 2
-          },
-          {
-            "name":"Tracing",
-            "value": 1,
-            "children":[
-              {"name": "Jaeger",
-                "value": "1"
-              }
-            ]
-          },
-          {
-            "name":"Metrics",
-            "value": 1,
-            "children":[
-              {"name": "Prometheus",
-                "value": "1"
-              }
-            ]
+        "name": "Cassandra",
+        "value": 2,
+        "itemStyle": {
+          "color": "#d0b24f"
+        }
+      },
+      {
+        "name": "Logging",
+        "value": 2,
+        "itemStyle": {
+          "color": "#d0b12f"
+        },
+        "children": [{
+          "name": "log4j2",
+          "value": "3",
+          "itemStyle": {
+            "color": "#d0a24f"
           }
-        ],
-        "itemStyle": "item1"
+        }]
+      },
+      {
+        "name": "OpenTelemetry",
+        "value": 2,
+        "itemStyle": {
+          "color": "#a1b24f"
+        }
+      },
+      {
+        "name": "Tracing",
+        "value": 2,
+        "itemStyle": {
+          "color": "#d1244f"
+        },
+        "children": [{
+          "name": "Jaeger",
+          "value": "3",
+          "itemStyle": {
+            "color": "#d1356f"
+          }
+        }]
+      },
+      {
+        "name": "Metrics",
+        "value": 2,
+        "itemStyle": {
+          "color": "#faef07"
+        },
+        "children": [{
+          "name": "Prometheus",
+          "value": "3",
+          "itemStyle": {
+            "color": "#a2b029"
+          }
+        }]
       }
-    ],
-    "itemStyle": "item1"
+    ]
+  }]
+},
+{
+  "name": "Golang",
+  "value": 7,
+  "itemStyle": {
+    "color": "blue"
   },
-  {
-    "name": "Golang",
-    "value": 7,
-    "children": [
-      {
-        "name":"Concurrency",
-        "value": 3,
-        "children": [
-          {
-            "name":"channels",
-            "value": 4
-          },
-          {
-            "name":"goroutines",
-            "value": 4
+  "children": [{
+      "name": "Concurrency",
+      "value": 3,
+      "itemStyle": {
+        "color": "#4ed44c"
+      },
+      "children": [{
+          "name": "channels",
+          "value": 2,
+          "itemStyle": {
+            "color": "#6dd1b8"
           }
-        ],
-        "itemStyle": "item5"
-      },
-      {
-        "name":"grpc",
-        "value": 3
-      },
-      {
-          "name":"openapi",
-          "value": 3
-      },
-      {
-          "name":"zap",
-          "value": 3
-      },
-      {
-          "name":"kafka-go",
-          "value": 3
-      },
-      {
-          "name":"etcd",
-          "value": 3
-      },
-      {
-          "name":"m3db.io",
-          "value": 3
+        },
+        {
+          "name": "goroutines",
+          "value": 2,
+          "itemStyle": {
+            "color": "green"
+          }
+        }
+      ]
+    },
+    {
+      "name": "grpc",
+      "value": 3,
+      "itemStyle": {
+        "color": "red"
       }
-    ],
-    "itemStyle": "item2"
+    },
+    {
+      "name": "openapi",
+      "value": 3,
+      "itemStyle": {
+        "color": "#3a4a87"
+      }
+    },
+    {
+      "name": "zap",
+      "value": 3,
+      "itemStyle": {
+        "color": "#010617"
+      }
+    },
+    {
+      "name": "kafka-go",
+      "value": 3,
+      "itemStyle": {
+        "color": "#463ab5"
+      }
+    },
+    {
+      "name": "etcd",
+      "value": 3,
+      "itemStyle": {
+        "color": "#3ab5a7"
+      }
+    },
+    {
+      "name": "m3db.io",
+      "value": 2,
+      "itemStyle": {
+        "color": "#b5b33a"
+      }
+    }
+  ]
+},
+{
+  "name": "Python",
+  "value": 3,
+  "itemStyle": {
+    "color": "#ebae34"
   },
-  {
-    "name": "Python",
-    "value": 3,
-    "children": [
-      {
-        "name": "ML",
-        "children": [
-          {
-            "name": "scikit",
-            "value": 2,
-            "itemStyle": "item3"
-          },
-          {
-            "name": "numpy",
-            "value": 2,
-            "itemStyle": "item3"
-          },
-          {
-            "name": "pandas",
-            "value": 1,
-            "itemStyle": "item3"
-          },
-          {
-            "name": "pytorch",
-            "value": 1,
-            "itemStyle": "item3"
-          }
-        ],
-        "itemStyle": "item3"
+  "children": [{
+      "name": "scikit",
+      "value": 2,
+      "itemStyle": {
+        "color": "#ebae36"
       }
-    ],
-    "itemStyle": "item3"
+    },
+    {
+      "name": "numpy",
+      "value": 2,
+      "itemStyle": {
+        "color": "#8ed16d"
+      }
+    },
+    {
+      "name": "pandas",
+      "value": 1,
+      "itemStyle": {
+        "color": "#6d83d1"
+      }
+    },
+    {
+      "name": "pytorch",
+      "value": 1,
+      "itemStyle": {
+        "color": "#d16d95"
+      }
+    }
+  ]
+},
+{
+  "name": "JavaScript",
+  "value": 7,
+  "itemStyle": {
+    "color": "#bd8fba"
   },
-  {
-    "name": "JavaScript",
-    "value": 3,
-    "children": [
-      {
-        "name": "Web",
-        "value": 4,
-        "children": [
-          {
-            "name": "react",
-            "value": 2,
-            "itemStyle": "item3"
-          },
-          {
-            "name": "purecss",
-            "value": 2,
-            "itemStyle": "item3"
-          },
-          {
-            "name": "echarts",
-            "value": 1,
-            "itemStyle": "item3"
-          },
-          {
-            "name": "cordova",
-            "value": 2,
-            "itemStyle": "item3"
-          }
-        ],
-        "itemStyle": "item3"
+  "children": [{
+      "name": "react",
+      "value": 4,
+      "itemStyle": {
+        "color": "#d4604c"
       }
-    ],
-    "itemStyle": "item4"
-  }
+    },
+    {
+      "name": "purecss",
+      "value": 3,
+      "itemStyle": {
+        "color": "#bd8fba"
+      }
+    },
+    {
+      "name": "echarts",
+      "value": 2,
+      "itemStyle": {
+        "color": "#bd8fba"
+      }
+    },
+    {
+      "name": "cordova",
+      "value": 5,
+      "itemStyle": {
+        "color": "#bd8fba"
+      }
+    }
+  ]
+}
 ]
-
-
-
-
