@@ -1,9 +1,26 @@
-.body {
-  color: red;
-  background: url('../images/icon.png');
+body {
+  /* background-color: black; */
+  background-color: white;
 }
 
-#main {
-  width: 400px;
-  height: 300px;
+#ecIntroBar{
+  width: 100vw;
+  height: 50vh;
 }
+
+#ecIntroName{
+  width: 100vw;
+  height: 25vh;
+}
+
+#ecIntroTag{
+  width: 100vw;
+  height: 25vh;
+}
+
+.skillsItem {
+  width: 60vw;
+  height: 80vh;
+}
+
+

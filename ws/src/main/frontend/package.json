@@ -22,7 +22,9 @@
   },
   "dependencies": {
     "echarts": "^5.3.2",
+    "jquery": "^3.6.0",
     "lodash": "^4.17.21",
-    "purecss": "^2.1.0"
+    "purecss": "^2.1.0",
+    "three": "^0.141.0"
   }
 }

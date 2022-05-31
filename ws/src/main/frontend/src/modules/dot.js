@@ -2,7 +2,7 @@ import * as echarts from 'echarts';
 import webkitDep from '../data/data.json';
 
 export default function drawMe() {
-var chartDom = document.getElementById('main');
+var chartDom = document.getElementById("ecSkills");
 var myChart = echarts.init(chartDom);
 var option;
 
