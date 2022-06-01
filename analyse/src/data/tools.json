@@ -1,0 +1,211 @@
+[{
+  "name": "Java",
+  "children": [{
+    "name": "Vertx",
+    "itemStyle": {
+      "color": "#5470c6"
+    },
+    "children": [{
+        "name": "Kafka",
+        "value": 3,
+        "itemStyle": {
+          "color": "#ee6666"
+        }
+      },
+      {
+        "name": "Cassandra",
+        "value": 3,
+        "itemStyle": {
+          "color": "#d0b24f"
+        }
+      },
+      {
+        "name": "Logging",
+        "value": 3,
+        "itemStyle": {
+          "color": "#d0b12f"
+        },
+        "children": [{
+          "name": "log4j2",
+          "value": 1,
+          "itemStyle": {
+            "color": "#27727b"
+          }
+        }]
+      },
+      {
+        "name": "OpenTelemetry",
+        "value": 3,
+        "itemStyle": {
+          "color": "#a1b24f"
+        }
+      },
+      {
+        "name": "Tracing",
+        "value": 3,
+        "itemStyle": {
+          "color": "#d1244f"
+        },
+        "children": [{
+          "name": "Jaeger",
+          "value": 1,
+          "itemStyle": {
+            "color": "#516b91"
+          }
+        }]
+      },
+      {
+        "name": "Metrics",
+        "value": 3,
+        "itemStyle": {
+          "color": "#fcce10"
+        },
+        "children": [{
+          "name": "Prometheus",
+          "value": 1,
+          "itemStyle": {
+            "color": "#a2b029"
+          }
+        }]
+      }
+    ]
+  }]
+},
+{
+  "name": "Golang",
+  "itemStyle": {
+    "color": "#fac858"
+  },
+  "children": [{
+      "name": "Concurrency",
+      "itemStyle": {
+        "color": "#73c0de"
+      },
+      "children": [{
+          "name": "Channels",
+          "value": 3,
+          "itemStyle": {
+            "color": "#6dd1b8"
+          }
+        },
+        {
+          "name": "Goroutines",
+          "value": 2,
+          "itemStyle": {
+            "color": "green"
+          }
+        }
+      ]
+    },
+    {
+      "name": "gRPC",
+      "value": 1,
+      "itemStyle": {
+        "color": "#3ba272"
+      }
+    },
+    {
+      "name": "OpenAPI",
+      "value": 2,
+      "itemStyle": {
+        "color": "#3a4a87"
+      }
+    },
+    {
+      "name": "zap ",
+      "value": 2,
+      "itemStyle": {
+        "color": "#010617"
+      }
+    },
+    {
+      "name": "kafka-go",
+      "value": 3,
+      "itemStyle": {
+        "color": "#463ab5"
+      }
+    },
+    {
+      "name": "etcd.io",
+      "value": 4,
+      "itemStyle": {
+        "color": "#fc8452"
+      }
+    },
+    {
+      "name": "m3db.io",
+      "value": 5,
+      "itemStyle": {
+        "color": "#9a60b4"
+      }
+    }
+  ]
+},
+{
+  "name": "Python",
+  "itemStyle": {
+    "color": "#9a60b4"
+  },
+  "children": [{
+      "name": "scikit-learn",
+      "value": 4,
+      "itemStyle": {
+        "color": "#ebae36"
+      }
+    },
+    {
+      "name": "NumPy",
+      "value": 3,
+      "itemStyle": {
+        "color": "#8ed16d"
+      }
+    },
+    {
+      "name": "Pandas",
+      "value": 2,
+      "itemStyle": {
+        "color": "#6d83d1"
+      }
+    },
+    {
+      "name": "PyTorch",
+      "value": 5,
+      "itemStyle": {
+        "color": "#d16d95"
+      }
+    }
+  ]
+},
+{
+  "name": "JavaScript",
+  "children": [{
+      "name": "React",
+      "value": 4,
+      "itemStyle": {
+        "color": "#d4604c"
+      }
+    },
+    {
+      "name": "Pure.CSS",
+      "value": 2,
+      "itemStyle": {
+        "color": "#008acd"
+      }
+    },
+    {
+      "name": "ECharts",
+      "value": 3,
+      "itemStyle": {
+        "color": "#ffb980"
+      }
+    },
+    {
+      "name": "Cordova",
+      "value": 4,
+      "itemStyle": {
+        "color": "#9a7fd1"
+      }
+    }
+  ]
+}
+]
