@@ -10,7 +10,7 @@ export default function drawTools(){
 
   option = {
     title: {
-      text: 'Tools',
+      text: 'TechStack',
       textStyle: {
         fontSize: 14,
         align: 'center'
@@ -21,12 +21,13 @@ export default function drawTools(){
     },
     series: {
       type: 'sunburst',
+      name: 'TechStack',
       data: data,
       radius: [0, '90%'],
       sort: undefined,
-      emphasis: {
-        focus: 'ancestor'
-      },
+      // emphasis: {
+      //   focus: 'ancestor'
+      // },
       levels: [
         {},
         {
@@ -43,19 +44,20 @@ export default function drawTools(){
           r0: '35%',
           r: '70%',
           label: {
-            align: 'right'
+            align: 'right',
+            position: 'bottomLeft',
           }
         },
         {
-          r0: '70%',
-          r: '72%',
+          r0: '90%',
+          r: '70%',
           label: {
-            position: 'outside',
+            position: 'topRight',
             padding: 3,
             silent: false
           },
           itemStyle: {
-            borderWidth: 3
+            borderWidth: 1
           }
         }
       ]
