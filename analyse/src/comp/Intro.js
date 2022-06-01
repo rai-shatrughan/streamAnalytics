@@ -1,6 +1,24 @@
+import React from 'react';
 import * as echarts from 'echarts';
 
-export default function drawIntro(){
+export default class Intro extends React.Component {
+  
+    componentDidMount() {
+          drawIntro();
+    }
+  
+    render() {
+      return (
+        <div className="pure-g g1 intro">
+            <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4" id="ecIntroBar"></div>
+            <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4" id="ecIntroName"></div>
+            <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4" id="ecIntroTag"></div>
+        </div>
+      );
+    }
+}
+  
+function drawIntro(){
   drawIntroBar();
   drawIntroName();
   drawIntroTag();

@@ -1,7 +1,23 @@
+import React from 'react';
 import * as echarts from 'echarts';
-import json from './data/tools.json';
+import json from '../data/tools.json';
 
-export default function drawTools(){
+export default class Tools extends React.Component {
+  
+    componentDidMount() {
+        drawTools();
+    }
+  
+    render() {
+      return (
+        <div className="pure-g g3 tools">
+            <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4" id="ecTools"></div>
+        </div>
+      );
+    }
+}
+
+function drawTools(){
   var chartDom = document.getElementById('ecTools');
   var myChart = echarts.init(chartDom);
   var option;
