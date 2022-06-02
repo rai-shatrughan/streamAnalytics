@@ -1,2 +1,2 @@
 npm run build
-serve -s ../docs -p 4200
+serve -s build -p 4200
