@@ -1,24 +1,24 @@
 import React from 'react';
 import * as echarts from 'echarts';
-import json from '../data/graph.json';
+import json from '../data/domains.json';
 
-export default class Graph extends React.Component {
+export default class Domains extends React.Component {
   
     componentDidMount() {
-        drawGraph();
+        drawDomains();
     }
   
     render() {
       return (
-        <div className="pure-g g4 graph">
-            <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4" id="ecGraph"></div>
+        <div className="pure-g g4 domains">
+            <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4" id="ecDomains"></div>
         </div>
       );
     }
 }
 
-function drawGraph(){
-    var chartDom = document.getElementById('ecGraph');
+function drawDomains(){
+    var chartDom = document.getElementById('ecDomains');
     var myChart = echarts.init(chartDom);
     var option;
 

@@ -1,24 +1,24 @@
 import React from 'react';
 import * as echarts from 'echarts';
-import json from '../data/tools.json';
+import json from '../data/techstack.json';
 
-export default class Tools extends React.Component {
+export default class TechStack extends React.Component {
   
     componentDidMount() {
-        drawTools();
+        drawTechStack();
     }
   
     render() {
       return (
         <div className="pure-g g3 tools">
-            <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4" id="ecTools"></div>
+            <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4" id="ecTechStack"></div>
         </div>
       );
     }
 }
 
-function drawTools(){
-  var chartDom = document.getElementById('ecTools');
+function drawTechStack(){
+  var chartDom = document.getElementById('ecTechStack');
   var myChart = echarts.init(chartDom);
   var option;
 
@@ -26,7 +26,7 @@ function drawTools(){
 
   option = {
     title: {
-      text: 'TechStack',
+    //   text: 'TechStack',
       textStyle: {
         fontSize: 14,
         align: 'center'

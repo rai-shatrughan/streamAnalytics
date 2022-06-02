@@ -3,32 +3,48 @@ body {
   background-color: white;
 }
 
-#ecIntroBar{
+#ecHomeBar{
   width: 100vw;
   height: 50vh;
 }
 
-#ecIntroName{
+#ecHomeName{
   width: 100vw;
   height: 25vh;
 }
 
-#ecIntroTag{
+#ecHomeTag{
   width: 100vw;
-  height: 25vh;
+  height: 20vh;
 }
 
 .skillsItem {
-  width: 60vw;
-  height: 80vh;
+  width: 33vw;
+  height: 44vh;
 }
 
-#ecTools {
-  width: 100vw;
-  height: 100vh;
-}
-#ecGraph {
+#ecTechStack {
   width: 100vw;
   height: 100vh;
 }
 
+#ecDomains {
+  width: 100vw;
+  height: 95vh;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: underline;
+}
+
+a:active {
+  text-decoration: underline;
+}
+
+.pure-menu-link {
+    padding: 20px;
+}

@@ -57,7 +57,7 @@
       {
         "id": "6",
         "name": "SparkStreaming",
-        "symbolSize": 7.6666666666666665,
+        "symbolSize": 3.6666666666666665,
         "x": -332.6012,
         "y": 485.16974,
         "value": 4,
@@ -255,7 +255,7 @@
       {
         "id": "28",
         "name": "API Gateway",
-        "symbolSize": 8.152382000000001,
+        "symbolSize": 4.152382000000001,
         "x": -225.73984,
         "y": 82.41631,
         "value": 12.228573,
@@ -264,7 +264,7 @@
       {
         "id": "29",
         "name": "luraproject/lura",
-        "symbolSize": 6.466666666666667,
+        "symbolSize": 3.466666666666667,
         "x": -385.6842,
         "y": -20.206686,
         "value": 23.2,
@@ -272,7 +272,7 @@
       },
       {
         "id": "30",
-        "name": "API Six",
+        "name": "APISIX",
         "symbolSize": 8.495239333333333,
         "x": -403.92447,
         "y": -197.69823,
@@ -345,7 +345,7 @@
       {
         "id": "42",
         "name": "Docker-compose",
-        "symbolSize": 5.809524666666666,
+        "symbolSize": 1.809524666666666,
         "x": -446.7876,
         "y": 123.38005,
         "value": 17.714287,
@@ -506,7 +506,7 @@
       },
       {
         "id": "64",
-        "name": "Kali-Linux",
+        "name": "Kali",
         "symbolSize": 7.609526666666667,
         "x": 455.81955,
         "y": -115.45826,
@@ -551,7 +551,7 @@
       },
       {
         "id": "74",
-        "name": "Circuit Breaker",
+        "name": "CircuitBreaker",
         "symbolSize": 6.495239333333333,
         "x": 466.04922,
         "y": 283.3606,
@@ -560,7 +560,7 @@
       },
       {
         "id": "75",
-        "name": "Rate Limiting",
+        "name": "RateLimiting",
         "symbolSize": 7.638097333333334,
         "x": 238.79364,
         "y": -314.06345,
@@ -569,7 +569,7 @@
       },
       {
         "id": "76",
-        "name": "Side Car",
+        "name": "SideCar",
         "symbolSize": 6.638097333333334,
         "x": 712.18353,
         "y": 4.8131495,

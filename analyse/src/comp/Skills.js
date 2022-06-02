@@ -23,8 +23,8 @@ const skills = new Map([
     ['Observability', 75],
     ['Streaming', 75],
     ['NLP', 60],
-    ['Reactive Programming', 60],
-    ['Computer Vision', 60]
+    ['RxJava', 60],
+    ['OpenCV', 60]
 ]);
 
 
@@ -50,14 +50,23 @@ function drawSkill(elementId, chartName, score){
         progress: {
           show: true
         },
+        axisLabel: {
+            fontSize: 10
+        },
+        //   title: {
+        //     // show: true,
+        //     fontSize: 12
+        //   },
         detail: {
           valueAnimation: true,
-          formatter: '{value}'
+          formatter: '{value}',
+          fontSize: 1
         },
         data: [
           {
             value: score,
-            name: chartName
+            name: chartName,
+            fontSize: 1
           }
         ]
       }

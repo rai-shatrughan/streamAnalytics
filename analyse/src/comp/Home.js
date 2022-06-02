@@ -1,31 +1,31 @@
 import React from 'react';
 import * as echarts from 'echarts';
 
-export default class Intro extends React.Component {
+export default class Home extends React.Component {
   
     componentDidMount() {
-          drawIntro();
+        drawHome();
     }
   
     render() {
       return (
-        <div className="pure-g g1 intro">
-            <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4" id="ecIntroBar"></div>
-            <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4" id="ecIntroName"></div>
-            <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4" id="ecIntroTag"></div>
+        <div className="pure-g g1 home">
+            <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4" id="ecHomeBar"></div>
+            <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4" id="ecHomeName"></div>
+            <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4" id="ecHomeTag"></div>
         </div>
       );
     }
 }
   
-function drawIntro(){
-  drawIntroBar();
-  drawIntroName();
-  drawIntroTag();
+function drawHome(){
+  drawHomeBar();
+  drawHomeName();
+  drawHomeTag();
 }
 
-function drawIntroBar(){
-  var chartDom = document.getElementById('ecIntroBar');
+function drawHomeBar(){
+  var chartDom = document.getElementById('ecHomeBar');
   var myChart = echarts.init(chartDom);
   var option;
 
@@ -75,8 +75,8 @@ function drawIntroBar(){
   option && myChart.setOption(option);
 }
 
-function drawIntroName(){
-  var chartDom = document.getElementById('ecIntroName');
+function drawHomeName(){
+  var chartDom = document.getElementById('ecHomeName');
   var myChart = echarts.init(chartDom);
   var option;
 
@@ -131,8 +131,8 @@ function drawIntroName(){
   option && myChart.setOption(option);
 }
 
-function drawIntroTag(){
-  var chartDom = document.getElementById('ecIntroTag');
+function drawHomeTag(){
+  var chartDom = document.getElementById('ecHomeTag');
   var myChart = echarts.init(chartDom);
   var option;
 
