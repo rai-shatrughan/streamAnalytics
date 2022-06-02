@@ -29,29 +29,35 @@ function drawGraph(){
     myChart.hideLoading();
     graph.nodes.forEach(function (node) {
         node.label = {
-        show: node.symbolSize > 30
+        show: node.symbolSize > 5
         };
     });
     option = {
         title: {
-        text: 'Full Stack',
-        subtext: 'Circular layout',
-        top: 'bottom',
-        left: 'right'
+        // text: 'Domains',
+        // top: 'top',
+        // left: 'left',
+        // z: 2,
         },
+        textStyle: {
+            fontSize: 12,
+        },        
         tooltip: {},
         legend: [
         {
             data: graph.categories.map(function (a) {
             return a.name;
-            })
+            }),
+            orient: "horizontal",
+            left: "center",
+            top: 0,
         }
         ],
         animationDurationUpdate: 1500,
         animationEasingUpdate: 'quinticInOut',
         series: [
         {
-            name: 'Full Stack',
+            name: 'Domain',
             type: 'graph',
             layout: 'circular',
             circular: {
