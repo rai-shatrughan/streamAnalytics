@@ -19,8 +19,8 @@ body {
 }
 
 .skillsItem {
-  width: 33vw;
-  height: 44vh;
+  width: 50vw;
+  height: 50vh;
 }
 
 #ecTechStack {
@@ -30,7 +30,7 @@ body {
 
 #ecDomains {
   width: 100vw;
-  height: 95vh;
+  height: 90vh;
 }
 
 a:link {
@@ -46,5 +46,5 @@ a:active {
 }
 
 .pure-menu-link {
-    padding: 20px;
+    padding: 10px;
 }

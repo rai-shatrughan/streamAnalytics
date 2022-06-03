@@ -344,7 +344,7 @@
       },
       {
         "id": "42",
-        "name": "Docker-compose",
+        "name": "helm",
         "symbolSize": 1.809524666666666,
         "x": -446.7876,
         "y": 123.38005,

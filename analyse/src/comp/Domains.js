@@ -29,7 +29,7 @@ function drawDomains(){
     myChart.hideLoading();
     graph.nodes.forEach(function (node) {
         node.label = {
-        show: node.symbolSize > 5
+        show: node.symbolSize > 1
         };
     });
     option = {
@@ -68,12 +68,19 @@ function drawDomains(){
             categories: graph.categories,
             roam: true,
             label: {
-            position: 'right',
+            position: 'left',
             formatter: '{b}'
             },
             lineStyle: {
             color: 'source',
             curveness: 0.3
+            },
+            labelLayout: {
+                // hideOverlap: true
+            },
+            scaleLimit: {
+                min: 0.4,
+                max: 0.8
             }
         }
         ]

@@ -10,7 +10,7 @@ export default class TechStack extends React.Component {
   
     render() {
       return (
-        <div className="pure-g g3 tools">
+        <div className="pure-g g3 techStack">
             <div className="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4" id="ecTechStack"></div>
         </div>
       );
