@@ -174,7 +174,7 @@ function drawHomeTag(){
               {
                 percent: 1,
                 style: {
-                  fill: 'green'
+                  fill: 'red'
                 }
               }
             ]
