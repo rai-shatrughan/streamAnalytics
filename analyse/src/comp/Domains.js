@@ -76,7 +76,7 @@ function drawDomains(){
             curveness: 0.3
             },
             labelLayout: {
-                // hideOverlap: true
+                hideOverlap: true
             },
             scaleLimit: {
                 min: 0.4,
