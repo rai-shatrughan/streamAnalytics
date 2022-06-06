@@ -19,13 +19,13 @@ body {
 }
 
 .skillsItem {
-  width: 50vw;
-  height: 50vh;
+  width: 33vw;
+  height: 45vh;
 }
 
 #ecTechStack {
   width: 100vw;
-  height: 100vh;
+  height: 90vh;
 }
 
 #ecDomains {
@@ -47,4 +47,16 @@ a:active {
 
 .pure-menu-link {
     padding: 10px;
+    color: white;
 }
+
+.pure-menu-horizontal {
+    display: inline-block;
+    width: 100vw;
+    vertical-align: middle;
+    -webkit-font-smoothing: antialiased;
+    background-color: #0047AB;
+    white-space: nowrap;
+    position: relative;
+}
+      

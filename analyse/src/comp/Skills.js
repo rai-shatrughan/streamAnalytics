@@ -19,7 +19,7 @@ export default class Skills extends React.Component {
 }
 
 const skills = new Map([
-    ['MicroServices', 70],
+    ['MicroService', 70],
     ['Observability', 75],
     ['Streaming', 75],
     ['NLP', 60],
@@ -53,10 +53,10 @@ function drawSkill(elementId, chartName, score){
         axisLabel: {
             fontSize: 10
         },
-        //   title: {
-        //     // show: true,
-        //     fontSize: 12
-        //   },
+        title: {
+            show: true,
+            fontSize: 11
+        },
         detail: {
           valueAnimation: true,
           formatter: '{value}',
