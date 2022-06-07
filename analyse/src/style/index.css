@@ -33,6 +33,11 @@ body {
   height: 90vh;
 }
 
+#containerVR {
+  width: 100vw;
+  height: 90vh;
+}
+
 a:link {
   text-decoration: none;
 }

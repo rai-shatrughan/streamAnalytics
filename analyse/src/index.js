@@ -11,8 +11,10 @@ import Home from './comp/Home';
 import Skills from './comp/Skills';
 import TechStack from './comp/TechStack';
 import Domains from './comp/Domains';
+import VR from './comp/VR';
 
-const menus = ["Home", "Skills", "TechStack", "Domains"];
+const menus = ["Home", "Skills", "TechStack", "Domains", "VR"];
+const compMap = {Home, Skills, TechStack, Domains, VR};
 
 class Index extends React.Component {
 
@@ -24,32 +26,21 @@ class Index extends React.Component {
 
     headerClicked(menu, e) {
         e.preventDefault(); 
-        console.log("menu :", menu);
         this.setState({show: menu});
     }
 
   render() {
-    let mainItem;
-    console.log(this.state.show);
-    if (this.state.show === "Home") {      
-        mainItem = <Home />;    
-    } else if (this.state.show === "Skills") {      
-        mainItem = <Skills />;    
-    } else if (this.state.show === "TechStack") {  
-        mainItem = <TechStack />;    
-    } else if (this.state.show === "Domains") {  
-        mainItem = <Domains />;  
-    }
+    const TagName = compMap[this.state.show];
 
     return (
-        <React.Fragment>
+        <div>
             <div className="pure-menu pure-menu-horizontal">
                 {menus.map((menu) =>
                     <Header menu={menu} key={menu} onClicked={(e)=>this.headerClicked(menu,e)}></Header>
                 )}
             </div>
-            {mainItem}
-        </React.Fragment>
+            <TagName />
+        </div>
     );
   }
 }

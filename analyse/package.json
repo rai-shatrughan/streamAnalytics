@@ -14,11 +14,12 @@
     "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
+    "three": "^0.141.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "predeploy": "npm run build",  
-    "deploy": "gh-pages -d build",    
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "//": "gh-pages -d build -r ssh://git@github.com/rai-shatrughan/rai-shatrughan.github.io",
     "start": "PORT=4200 react-scripts start",
     "build": "rm -rf build && react-scripts build",
