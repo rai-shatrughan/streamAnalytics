@@ -20,11 +20,11 @@ public class TestVerticle extends AbstractVerticle {
 	private HttpRequest<JsonObject> request;
 
 	public static void main(String[] args) {
-		int workers = 2;
+		int workers = 1;
 
 		DeploymentOptions depOptions = new DeploymentOptions();
 		depOptions.setWorker(true).setWorkerPoolSize(workers);
-		depOptions.setInstances(3000);
+		depOptions.setInstances(6000);
 
 		VertxOptions vertxOptions = new VertxOptions();
 		// default event pool size is (no. of cores*2)
@@ -53,10 +53,21 @@ public class TestVerticle extends AbstractVerticle {
 	}
 
 	private JsonObject buildTSJson() {
-		JsonObject json = new JsonObject().put("timestamp", Instant.now()).put("property", "temperature")
-				.put("unit", "celcius").put("value", 100.01);
+		JsonObject json = new JsonObject()
+    .put("name","sr_plant_furnace1")
+    .put("timestamp", Instant.now())
+    .put("property", "temperature")
+		.put("unit", "celcius")
+    .put("value", generateTemp());
 
 		return json;
 	}
+
+  private double generateTemp(){
+    int min = 10;
+    int max = 80;
+    double a = Math.random()*(max-min+1)+min;
+    return a;
+  }
 
 }
