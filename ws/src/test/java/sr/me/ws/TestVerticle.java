@@ -4,6 +4,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.WebClient;
@@ -15,61 +16,47 @@ import org.apache.logging.log4j.Logger;
 import java.time.Instant;
 
 public class TestVerticle extends AbstractVerticle {
-  private static final Logger logger = LogManager.getLogger();
-  private HttpRequest<JsonObject> request;
+	private static final Logger logger = LogManager.getLogger();
+	private HttpRequest<JsonObject> request;
 
-  public static void main(String[] args) {
-    boolean enableWorker = true;
-    int workers = 2;
-    int countVertx = 3000;
+	public static void main(String[] args) {
+		int workers = 2;
 
-    DeploymentOptions depOptions = new DeploymentOptions();
-    depOptions.setWorker(true).setWorkerPoolSize(workers);
+		DeploymentOptions depOptions = new DeploymentOptions();
+		depOptions.setWorker(true).setWorkerPoolSize(workers);
+		depOptions.setInstances(3000);
 
-    VertxOptions vertxOptions = new VertxOptions();
-    // default event pool size is (no. of cores*2)
-    vertxOptions.setEventLoopPoolSize(1);
+		VertxOptions vertxOptions = new VertxOptions();
+		// default event pool size is (no. of cores*2)
+		 vertxOptions.setEventLoopPoolSize(1);
 
-    Vertx vertx = Vertx.vertx(vertxOptions);
-    for(int i=0; i<countVertx; i++){
-      if (enableWorker) {
-        vertx.deployVerticle(new TestVerticle(), depOptions);
-      } else {
-        vertx.deployVerticle(new TestVerticle());
-      }
-    }
-  }
+		Vertx vertx = Vertx.vertx(vertxOptions);
+		vertx.deployVerticle(TestVerticle::new, depOptions);
+	}
 
-  @Override
-  public void start() {
-    request = WebClient.create(vertx)
-      .post(Constants.WS_SERVER_PORT, Constants.WS_SERVER_IP, "/api/v1/ts")
-      .ssl(false)
-      .putHeader("Accept", "application/json")
-      .as(BodyCodec.jsonObject())
-      .expect(ResponsePredicate.SC_OK);
+	@Override
+	public void start(Promise<Void> startPromise) {
+		request = WebClient.create(vertx).post(Constants.WS_SERVER_PORT, Constants.WS_SERVER_IP, "/api/v1/ts")
+				.ssl(false).putHeader("Accept", "application/json").as(BodyCodec.jsonObject())
+				.expect(ResponsePredicate.SC_OK);
 
-    vertx.setPeriodic(1000, id -> sendTS());
-    // sendTS();
-  }
+		vertx.setPeriodic(1000, id -> sendTS());
+		startPromise.complete();
+	}
 
-  private void sendTS() {
-    request.sendJsonObject(buildTSJson())
-      .onSuccess(res -> {
-        logger.info("Sent request:" + res.statusCode() + ":" + res.statusMessage());
-        })
-      .onFailure(err -> {logger.error("Failed request:" + err.getCause());
-        });
-    }
+	private void sendTS() {
+		request.sendJsonObject(buildTSJson()).onSuccess(res -> {
+			logger.info("Sent request:" + res.statusCode() + ":" + res.statusMessage());
+		}).onFailure(err -> {
+			logger.error("Failed request:" + err.getCause());
+		});
+	}
 
-  private JsonObject buildTSJson(){
-    JsonObject json = new JsonObject()
-      .put("timestamp", Instant.now())
-      .put("property", "temperature")
-      .put("unit", "celcius")
-      .put("value", 100.01);
+	private JsonObject buildTSJson() {
+		JsonObject json = new JsonObject().put("timestamp", Instant.now()).put("property", "temperature")
+				.put("unit", "celcius").put("value", 100.01);
 
-    return json;
-  }
+		return json;
+	}
 
 }
