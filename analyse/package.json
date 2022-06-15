@@ -1,6 +1,5 @@
 {
-  "homepage": "http://rai-shatrughan.github.io/streamAnalytics",
-  "//": "http://rai-shatrughan.github.io",
+  "homepage": ".",
   "name": "analyse",
   "version": "0.1.0",
   "private": true,
@@ -20,7 +19,8 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "//": "gh-pages -d build -r ssh://git@github.com/rai-shatrughan/rai-shatrughan.github.io",
+    "predeployme": "npm run build",
+    "deployme": "gh-pages -d build -r ssh://git@github.com/rai-shatrughan/rai-shatrughan.github.io",
     "start": "PORT=4200 react-scripts start",
     "build": "rm -rf build && react-scripts build",
     "test": "react-scripts test",
