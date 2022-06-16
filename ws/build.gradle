@@ -13,6 +13,9 @@ dependencies {
     implementation 'io.vertx:vertx-cassandra-client'
     implementation 'io.vertx:vertx-micrometer-metrics'
     implementation 'io.vertx:vertx-opentracing'
+
+    implementation 'io.vertx:vertx-web-openapi:4.3.1'
+
     implementation 'io.micrometer:micrometer-registry-prometheus:1.5.2'
     implementation 'org.apache.logging.log4j:log4j-api:2.17.2'
     implementation 'org.apache.logging.log4j:log4j-core:2.17.2'
@@ -36,6 +39,13 @@ task kc(type: JavaExec) {
     classpath = sourceSets.test.runtimeClasspath
     main = 'sr.me.ws.CustomLauncher'
     args = ['run', 'sr.me.ws.KafkaCassandraVerticle', '-DJAEGER_AGENT_HOST=172.18.0.91']
+}
+
+task iot(type: JavaExec) {
+    group = "Execution"
+    classpath = sourceSets.test.runtimeClasspath
+    main = 'sr.me.ws.CustomLauncher'
+    args = ['run', 'sr.me.swag.IoTVerticle', '-DJAEGER_AGENT_HOST=172.18.0.91']
 }
 
 vertx {

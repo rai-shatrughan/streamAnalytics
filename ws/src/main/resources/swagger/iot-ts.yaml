@@ -1,0 +1,584 @@
+openapi: 3.0.1
+info:
+  title: IoT Time Series API
+  description: Create, update, and query time series data with a precision of 1 millisecond.
+  version: 3.6.0
+  x-visibility: external
+servers:
+  - url: /api/iottimeseries/v3
+paths:
+  /timeseries:
+    put:
+      tags:
+        - Time Series Operations
+      summary:
+        Create or update time series data for mutiple unique asset-aspect (entity-property
+        set) combinations.
+      description: |
+        Create or update time series data for multiple unique combinations of assets (entities) and aspects (property sets).
+        In case of an update of data at an already existing time, all properties at that time will be replaced by the ones provided in the request. All asset-aspect (entity-property set) combinations need to belong to the same tenant.
+
+        Request body limitations:
+        1. A maximum of 5  asset-aspect (entity-property set) combinations can be provided
+        2. The request body size must be equal or less than 100 kb
+        3. A maximum of 100 time series data items can be provided overall
+      operationId: createOrUpdateTimeseries
+      requestBody:
+        content:
+          "*/*":
+            schema:
+              $ref: "#/components/schemas/TimeSeries"
+        required: true
+      responses:
+        202:
+          description: |
+            Accepted. For each asset-aspect (entity-property set) pair a validation error can occur. In case an error is returned for an asset-aspect (entity-property set) pair, time series data for that pair is not considered. Possible validation errors are
+             - 400: bad request schema for asset-aspect (entity-property set) pair
+             - 404: asset (entity) and/or aspect(proprety set) not found
+             - 429: asset-aspect (entity-property set) pair could not be processed due to too many requests
+             - default: unexpected error while processing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiStatusError"
+        400:
+          description: |
+            Bad request, in case the resource is invalid.
+            Few of the validations as below -
+            - Total number of records for all assets (entites) and aspects (property sets) should not be more than 100 per PUT request.
+            - Total size of the payload should not be more than 100 kb per PUT request.
+            - Payload cannot have more than 5 asset (entity)/aspect (property set) combinations.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MultiTimeseiresBadRequest"
+        401:
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+        503:
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailable"
+        default:
+          description: Other error with any status code and response body format.
+          content: {}
+      security:
+        - timeseries:
+            - iot.tim.w
+      x-codegen-request-body-name: timeseries
+  /timeseries/{entityId}/{propertySetName}:
+    get:
+      tags:
+        - Time Series Operations
+      summary: Retrieve time series data
+      description: |
+        Retrieve time series data for one combination of an asset (entity) and an(a) aspect (property set). The maximum number of time series data items returned per request is defined by parameter <i>limit</i>. In case more time series data items are present in the requested time range, only a subset of data items will be returned and a header <i>link</i> is added to the response. The header value contains the request URL to fetch the next set of  time series data items, by increasing the <i>from</i> parameter accordingly. Returns the latest record if no range is provided.
+      operationId: retrieveTimeseries
+      parameters:
+        - name: entityId
+          in: path
+          description: unique identifier of the asset (entity)
+          required: true
+          schema:
+            maxLength: 32
+            minLength: 32
+            pattern: "[a-f0-9]{32}"
+            type: string
+        - name: propertySetName
+          in: path
+          description: Name of the aspect (property set).
+          required: true
+          schema:
+            type: string
+        - name: from
+          in: query
+          description: Beginning of the time range to be retrieved (exclusive).
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          description: End of the time range to be retrieved (inclusive).
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          description: Maximum number of time series data items to be retrieved.
+          schema:
+            maximum: 2000
+            type: integer
+            default: 2000
+        - name: select
+          in: query
+          description:
+            Comma-separated list of properties to be returned. By default
+            all properties of an(a) aspect (property set) are considered.
+          schema:
+            type: string
+        - name: sort
+          in: query
+          description:
+            Define sorting order of returned data. Sorting can be chronologically
+            ascending (<i>asc</i>) or descending (<i>desc</i>).
+          schema:
+            type: string
+            default: asc
+            enum:
+              - asc
+              - desc
+        - name: latestValue
+          in: query
+          description:
+            If true, only the latest value of each property is returned.
+            Latest values must be at least two hours old and at maximum 30 days old,
+            in order to be considered. The returned values might be co-located or spread
+            over multiple timestamps. Each property appears at max once in the response.
+            The select parameter can be used to limit the properties to be considered.
+            Parameters from, to, and limit must not be used in conjunction with latest.
+          schema:
+            type: boolean
+            default: false
+      responses:
+        200:
+          description: array of time series
+          headers:
+            link:
+              description: Contains a link to the next page, if there is a next page
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TimeSeriesDataItem"
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+        404:
+          description: asset (entity) not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        429:
+          description: |
+            Too many requests that can be arised based on subsequent case:
+            - User has sent too many requests in a given amount of time.
+
+            A Retry-After header might be included to this response indicating how long in 'seconds' to wait before making a new request.
+          headers:
+            Retry-After:
+              description: Time in seconds to wait before making a new request
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RateLimiter"
+        503:
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailable"
+        default:
+          description: Other error with any status code and response body format.
+          content: {}
+      security:
+        - timeseries:
+            - iot.tim.r
+    put:
+      tags:
+        - Time Series Operations
+      summary: Create or update time series data
+      description: |
+        Create or update time series data for one combination of an asset (entity) and an(a) aspect (property set). In case of an update of data at an already existing time, all properties at that time will be replaced by the ones provided in the request.
+      operationId: createOrUpdateTimeseriesData
+      parameters:
+        - name: entityId
+          in: path
+          description: unique identifier of the asset (entity)
+          required: true
+          schema:
+            maxLength: 32
+            minLength: 32
+            pattern: "[a-f0-9]{32}"
+            type: string
+        - name: propertySetName
+          in: path
+          description: Name of the aspect (property set).
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: time series data array
+        content:
+          "*/*":
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/TimeSeriesDataItem"
+        required: true
+      responses:
+        204:
+          description: timeseries written
+          content: {}
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+        404:
+          description: asset (entity) not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        429:
+          description: too many requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TooManyRequests"
+        503:
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailable"
+        default:
+          description: Other error with any status code and response body format.
+          content: {}
+      security:
+        - timeseries:
+            - iot.tim.w
+      x-codegen-request-body-name: timeseries
+    delete:
+      tags:
+        - Time Series Operations
+      summary: Delete time series data
+      description: |
+        Delete time series data for one combination of an asset (entity) and an(a) aspect (property set). All property values within the given time range are deleted.
+      operationId: deleteTimeseries
+      parameters:
+        - name: entityId
+          in: path
+          description: unique identifier of the asset (entity)
+          required: true
+          schema:
+            maxLength: 32
+            minLength: 32
+            pattern: "[a-f0-9]{32}"
+            type: string
+        - name: propertySetName
+          in: path
+          description: Name of the aspect (property set).
+          required: true
+          schema:
+            type: string
+        - name: from
+          in: query
+          description: beginning of the timerange to delete (exclusive)
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          description: end of the timerange to delete (inclusive)
+          required: true
+          schema:
+            type: string
+            format: date-time
+      responses:
+        204:
+          description: deleted
+          content: {}
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+        404:
+          description: asset (entity) not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        503:
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceUnavailable"
+        default:
+          description: Other error with any status code and response body format.
+          content: {}
+      security:
+        - timeseries:
+            - iot.tim.d
+components:
+  schemas:
+    TimeSeriesDataItem:
+      required:
+        - _time
+      type: object
+      properties:
+        _time:
+          type: string
+          description: Timestamp of the data points.
+          format: date-time
+      additionalProperties:
+        type: object
+        description:
+          Properties as defined by the aspect (property set) containing
+          the time series data.
+      example:
+        _time: 2019-02-10T23:01:00Z
+        exampleproperty0: examplepropertyValue
+        exampleproperty0_qc: exampleproperty0_qc_Value
+        exampleproperty1: exampleproperty1Value
+    TimeSeriesItem:
+      required:
+        - data
+        - entityId
+        - propertySetName
+      type: object
+      properties:
+        entityId:
+          type: string
+          description: asset (entity) Id of timeseries data.
+        propertySetName:
+          type: string
+          description: aspect (property set) name of timeseries data.
+        data:
+          type: array
+          description:
+            Timeseries data for corresponsding asset (entity) Id and aspect
+            (property set) name.
+          items:
+            $ref: "#/components/schemas/TimeSeriesDataItem"
+    TimeSeries:
+      type: object
+      properties:
+        timeseries:
+          type: array
+          example:
+            - entityId: entityId1
+              propertySetName: propertySetName1
+              data:
+                - _time: 2019-02-10T23:00:00Z
+                  rpm: rpmValue1
+                  rpm_qc: rpm_qcValue1
+                  enginetemperature: enginetemperatureValue1
+                - time: 2019-02-10T23:01:00Z
+                  rpm: rpmValue2
+                  rpm_qc: rpm_qcValue2
+                  enginetemperature: enginetemperatureValue2
+            - entityId: entityId2
+              propertySetName: propertySetName2
+              data:
+                - _time: 2019-02-10T23:00:00Z
+                  height: heightValue
+                  height_qc: height_qcValue
+                  carmanual: carmanualValue
+            - entityId: entityId3
+              propertySetName: propertySetName3
+              data:
+                - _time: 2019-02-10T23:00:00Z
+                  speed: speedValue
+                  speed_qc: speed_qcValue
+                  width: widthValue
+          items:
+            $ref: "#/components/schemas/TimeSeriesItem"
+      description: Time series of a set of asset-aspect (entity-property set) combinations.
+    MultiStatusError:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/MultiStatusErrorItem"
+      description: a (errors, errorObject).
+    MultiStatusErrorItem:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: number
+          example: 404.0
+        error:
+          type: string
+          example: Not Found
+        exception:
+          type: string
+          example: sr.me.iot.exception.IotException
+        message:
+          type: string
+          example: "[6007] Invalid value ' for request param - propertysetname"
+        entityId:
+          type: string
+          example: entityId2
+        propertySetName:
+          type: string
+          example: propertySetName2
+        path:
+          type: string
+          example: /api/iottimeseries/v3/timeseries
+    BadRequest:
+      type: object
+      example:
+        timestamp: 2019-04-08T06:32:01.261+0000
+        status: 400
+        error: Bad Request
+        exception: sr.me.iot.exception.IotException
+        message:
+          "[6008] Invalid date format '2018-10-16T00:00:00Z111' for request
+          param - from"
+        path: /api/iottimeseries/v3/timeseries/entityId/propertySetName
+    MultiTimeseiresBadRequest:
+      type: object
+      example:
+        timestamp: 2019-04-08T06:32:01.261+0000
+        status: 400
+        error: Bad Request
+        exception: sr.me.iot.exception.IotException
+        message: Size of payload should not be more than 100 kb
+        path: /api/iottimeseries/v3/timeseries
+    NotFound:
+      type: object
+      example:
+        timestamp: 2019-04-08T06:32:01.261+0000
+        status: 404
+        error: Not Found
+        exception: sr.me.iot.exception.IotException
+        message: "[6408] Unable to find the entity - entityId"
+        path: /api/iottimeseries/v3/timeseries/entityId/propertySetName
+    TooManyRequests:
+      type: object
+      example:
+        timestamp: 2019-04-08T06:32:01.261+0000
+        status: 429
+        error: Too Many Requests
+        exception: sr.me.iot.exception.IotException
+        message:
+          "[429] Your request rate is too high, all calls will be rejected
+          for a while"
+        path: /api/iottimeseries/v3/timeseries/entityId/propertySetName
+    RateLimiter:
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: API rate limit exceeded
+    Forbidden:
+      type: object
+      example:
+        timestamp: 2019-04-08T06:32:01.261+0000
+        status: 403
+        error: Forbidden
+        message:
+          "[6552] User is not having required access to perform this operation
+          on given Asset/Entity {assetId}. Consult tenant admin for appropriate access."
+        path: /api/iottimeseries/v3/timeseries/entityId/propertySetName
+    ServiceUnavailable:
+      type: object
+      example:
+        timestamp: 2019-04-08T06:32:01.261+0000
+        status: 503
+        error: Service Unavailable
+        message: Service not available.
+        path: /api/iottimeseries/v3/timeseries/entityId/propertySetName
+    Unauthorized:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        message:
+          type: string
+          example: Not authorized to access this resource.
+  securitySchemes:
+    timeseries:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://oauth.simple.api/authorization
+          tokenUrl: https://oauth.simple.api/token
+          scopes:
+            iot.tim.r: read timeseries
+            iot.tim.w: write timeseries
+            iot.tim.d: delete timeseries
+x-ErrorTemplate:
+  type: object
+  properties:
+    timestamp:
+      type: string
+      format: date-time
+    status:
+      type: number
+    error:
+      type: string
+    exception:
+      type: string
+    message:
+      type: string
+    path:
+      type: string
