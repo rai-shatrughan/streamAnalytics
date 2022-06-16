@@ -29,45 +29,46 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimerTask;
 
-
 public class TSTask extends TimerTask {
   private Vertx vertx;
   private HttpRequest<JsonObject> request;
 
-  public TSTask(Vertx vertx){
+  public TSTask(Vertx vertx) {
     this.vertx = vertx;
   }
 
   @Override
-	public void run() {
+  public void run() {
     this.start(vertx);
     this.sendTS();
   }
 
   private void start(Vertx vertx) {
     request = WebClient.create(vertx)
-      .post(Constants.WS_SERVER_PORT, Constants.WS_SERVER_IP, "/api/v1/ts")
-      .ssl(false)
-      .putHeader("Accept", "application/json")
-      .as(BodyCodec.jsonObject())
-      .expect(ResponsePredicate.SC_OK);
+        .post(Constants.WS_SERVER_PORT, Constants.WS_SERVER_IP, "/api/v1/ts")
+        .ssl(false)
+        .putHeader("Accept", "application/json")
+        .as(BodyCodec.jsonObject())
+        .expect(ResponsePredicate.SC_OK);
   }
 
   private void sendTS() {
     request.sendJsonObject(buildTSJson())
-      .onSuccess(res -> {
-        System.out.print(Instant.now() + " : Resp Code - " + res.statusCode() + " : "+ "Resp Message - " + res.statusMessage() + "\n");
+        .onSuccess(res -> {
+          System.out.print(Instant.now() + " : Resp Code - " + res.statusCode() + " : " + "Resp Message - "
+              + res.statusMessage() + "\n");
         })
-      .onFailure(err -> {System.out.print(Instant.now() + " : Failed request" + err.getCause() + "\n");
+        .onFailure(err -> {
+          System.out.print(Instant.now() + " : Failed request" + err.getCause() + "\n");
         });
-    }
+  }
 
-  private JsonObject buildTSJson(){
+  private JsonObject buildTSJson() {
     JsonObject json = new JsonObject()
-      .put("timestamp", Instant.now())
-      .put("property", "temperature")
-      .put("unit", "celcius")
-      .put("value", 100.01);
+        .put("timestamp", Instant.now())
+        .put("property", "temperature")
+        .put("unit", "celcius")
+        .put("value", 100.01);
 
     return json;
   }
