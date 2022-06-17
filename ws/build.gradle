@@ -13,18 +13,17 @@ dependencies {
     implementation 'io.vertx:vertx-cassandra-client'
     implementation 'io.vertx:vertx-micrometer-metrics'
     implementation 'io.vertx:vertx-opentracing'
-
-    implementation 'io.vertx:vertx-web-openapi:4.3.1'
+    implementation 'io.vertx:vertx-web-client'
+    implementation 'io.vertx:vertx-json-schema'
+    implementation 'io.vertx:vertx-junit5'
+    implementation 'io.vertx:vertx-web-openapi'
 
     implementation 'io.micrometer:micrometer-registry-prometheus:1.5.2'
+
     implementation 'org.apache.logging.log4j:log4j-api:2.17.2'
     implementation 'org.apache.logging.log4j:log4j-core:2.17.2'
     runtimeOnly 'org.apache.logging.log4j:log4j-layout-template-json:2.17.2'
 
-
-    implementation 'io.vertx:vertx-web-client'
-    implementation 'io.vertx:vertx-json-schema'
-    implementation 'io.vertx:vertx-junit5'
 }
 
 task perf(type: JavaExec) {

@@ -22,6 +22,8 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.openapi.RouterBuilder;
 import io.vertx.ext.web.validation.RequestParameters;
 import io.vertx.ext.web.validation.ValidationHandler;
+import io.vertx.core.net.SelfSignedCertificate;
+
 import sr.me.ws.Handlers;
 
 public class IoTVerticle extends AbstractVerticle {
