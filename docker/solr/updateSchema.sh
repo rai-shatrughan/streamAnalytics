@@ -1,6 +1,6 @@
 curl -X POST -H 'Content-type:application/json' --data-binary '{
   "replace-field":{
-     "name":"tag",
+     "name":"source_host",
 	 "type":"text_general",
      "multiValued":"false",
 	 "indexed":"true",
@@ -12,19 +12,19 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
 	 "indexed":"true",
 	 "stored":"true" },
   "replace-field":{
-     "name":"log.logger",
+     "name":"logger_name",
 	 "type":"text_general",
      "multiValued":"false",
 	 "indexed":"true",
 	 "stored":"true" },
   "replace-field":{
-     "name":"log.level",
+     "name":"level",
 	 "type":"text_general",
      "multiValued":"false",
 	 "indexed":"true",
 	 "stored":"true" },
   "replace-field":{
-     "name":"process.thread.name",
+     "name":"tag",
 	 "type":"text_general",
      "multiValued":"false",
 	 "indexed":"true",
@@ -37,7 +37,7 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
 	 "stored":"true" },
   "replace-field":{
      "name":"_timestamp",
-	 "type":"pdates",
+	 "type":"text_general",
      "multiValued":"false",
 	 "indexed":"true",
 	 "stored":"true" }	 
