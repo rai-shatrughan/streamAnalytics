@@ -1,7 +1,6 @@
 version: "2.2"
 
 services:
-
   fluentd:
     build: ./fluentd
     container_name: fluentd
@@ -14,7 +13,7 @@ services:
     networks:
       sr_cluster_network:
         ipv4_address: ${FLUENTD_IP}
-  
+
   cassandra:
     image: cassandra:4.0.4
     container_name: cassandra
@@ -37,7 +36,7 @@ services:
         ipv4_address: ${CASSANDRA_IP}
 
   grafana:
-    image: 'grafana/grafana-oss:8.5.3'
+    image: "grafana/grafana-oss:8.5.3"
     container_name: grafana
     volumes:
       - /data/grafana:/var/lib/grafana
@@ -51,7 +50,7 @@ services:
         ipv4_address: ${GRAFANA_IP}
 
   jaeger-cassandra-schema:
-    image: 'jaegertracing/jaeger-cassandra-schema:1.33'
+    image: "jaegertracing/jaeger-cassandra-schema:1.33"
     container_name: jaeger-cassandra-schema
     environment:
       - CQLSH_HOST=${CASSANDRA_IP}
@@ -63,7 +62,7 @@ services:
         condition: service_healthy
 
   jaeger-agent:
-    image: 'jaegertracing/jaeger-agent:1.34'
+    image: "jaegertracing/jaeger-agent:1.34"
     container_name: jaeger-agent
     restart: always
     ports:
@@ -75,9 +74,9 @@ services:
       - PROCESSOR_JAEGER_BINARY_WORKERS=50
       - PROCESSOR_JAEGER_COMPACT_WORKERS=50
       - SPAN_STORAGE_TYPE=kafka
-      - KAFKA_PRODUCER_BROKERS=${KAFKA_IP}:9092   
+      - KAFKA_PRODUCER_BROKERS=${KAFKA_IP}:9092
       - METRICS_STORAGE_TYPE=prometheus
-      - PROMETHEUS_SERVER_URL=http://${PROMETHEUS_IP}:9090 
+      - PROMETHEUS_SERVER_URL=http://${PROMETHEUS_IP}:9090
     networks:
       sr_cluster_network:
         ipv4_address: ${JAEGER_AGENT_IP}
@@ -86,7 +85,7 @@ services:
         condition: service_healthy
 
   jaeger-collector:
-    image: 'jaegertracing/jaeger-collector:1.34'
+    image: "jaegertracing/jaeger-collector:1.34"
     container_name: jaeger-collector
     restart: always
     ports:
@@ -97,16 +96,16 @@ services:
       - SPAN_STORAGE_TYPE=kafka
       - KAFKA_PRODUCER_BROKERS=${KAFKA_IP}:9092
       - METRICS_STORAGE_TYPE=prometheus
-      - PROMETHEUS_SERVER_URL=http://${PROMETHEUS_IP}:9090 
+      - PROMETHEUS_SERVER_URL=http://${PROMETHEUS_IP}:9090
     networks:
       sr_cluster_network:
         ipv4_address: ${JAEGER_COLLECTOR_IP}
     depends_on:
       "cassandra":
-        condition: service_healthy   
+        condition: service_healthy
 
   jaeger-query:
-    image: 'jaegertracing/jaeger-query:1.34'
+    image: "jaegertracing/jaeger-query:1.34"
     container_name: jaeger-query
     restart: always
     ports:
@@ -115,16 +114,16 @@ services:
       - SPAN_STORAGE_TYPE=cassandra
       - CASSANDRA_SERVERS=${CASSANDRA_IP}
       - METRICS_STORAGE_TYPE=prometheus
-      - PROMETHEUS_SERVER_URL=http://${PROMETHEUS_IP}:9090 
+      - PROMETHEUS_SERVER_URL=http://${PROMETHEUS_IP}:9090
     networks:
       sr_cluster_network:
-        ipv4_address: ${JAEGER_QUERY_IP}    
+        ipv4_address: ${JAEGER_QUERY_IP}
     depends_on:
       "cassandra":
         condition: service_healthy
-      
+
   jaeger-ingester:
-    image: 'jaegertracing/jaeger-ingester:1.34'
+    image: "jaegertracing/jaeger-ingester:1.34"
     container_name: jaeger-ingester
     restart: always
     ports:
@@ -134,12 +133,10 @@ services:
       - KAFKA_CONSUMER_BROKERS=${KAFKA_IP}:9092
     networks:
       sr_cluster_network:
-        ipv4_address: ${JAEGER_INGESTER_IP}    
+        ipv4_address: ${JAEGER_INGESTER_IP}
     depends_on:
       "cassandra":
         condition: service_healthy
-
-
 
   kafka_zookeeper:
     image: docker.io/bitnami/zookeeper:3.8
@@ -179,7 +176,7 @@ services:
       - kafka_zookeeper
 
   prometheus:
-    image: 'prom/prometheus:v2.35.0'
+    image: "prom/prometheus:v2.35.0"
     container_name: prometheus
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
@@ -208,10 +205,10 @@ services:
         ipv4_address: ${SOLR_ZOO_IP}
 
   solr:
-    image: 'solr:8'
+    image: "solr:8"
     container_name: solr
     ports:
-     - "8983:8983"
+      - "8983:8983"
     environment:
       - ZK_HOST=${SOLR_ZOO_IP}:2182
     volumes:
@@ -246,7 +243,7 @@ services:
       ZEPPELIN_NOTEBOOK_DIR: /notebook
     networks:
       sr_cluster_network:
-        ipv4_address: ${ZEPPELIN_IP}    
+        ipv4_address: ${ZEPPELIN_IP}
 
   sr-me-ws:
     image: sr-me-ws:v1
@@ -268,21 +265,27 @@ services:
         condition: service_healthy
 
   sr-me-kafcas:
-      image: sr-me-kafcas:v1
-      container_name: sr-me-kafcas
-      hostname: sr-me-kafcas
-      restart: always
-      logging:
-        driver: fluentd
-        options:
-          fluentd-address: ${FLUENTD_IP}:24224
-          tag: "docker.{{.Name}}"
-      networks:
-        sr_cluster_network:
-          ipv4_address: ${SR_KAFCAS_IP}
-      depends_on:
-        "cassandra":
-          condition: service_healthy
+    image: sr-me-ws:v1
+    container_name: sr-me-kafcas
+    hostname: sr-me-kafcas
+    restart: always
+    command:
+      [
+        "run",
+        "sr.me.ws.KafkaCassandraVerticle",
+        "-DJAEGER_AGENT_HOST=172.18.0.91",
+      ]
+    logging:
+      driver: fluentd
+      options:
+        fluentd-address: ${FLUENTD_IP}:24224
+        tag: "docker.{{.Name}}"
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${SR_KAFCAS_IP}
+    depends_on:
+      "cassandra":
+        condition: service_healthy
 
 networks:
   sr_cluster_network:
