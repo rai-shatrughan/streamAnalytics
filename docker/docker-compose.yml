@@ -264,17 +264,12 @@ services:
       "cassandra":
         condition: service_healthy
 
-  sr-me-kafcas:
+  sr-me-kc:
     image: sr-me-ws:v1
-    container_name: sr-me-kafcas
-    hostname: sr-me-kafcas
+    container_name: sr-me-kc
+    hostname: sr-me-kc
     restart: always
-    command:
-      [
-        "run",
-        "sr.me.ws.KafkaCassandraVerticle",
-        "-DJAEGER_AGENT_HOST=172.18.0.91",
-      ]
+    command: ["run", "sr.me.ws.KCVerticle", "-DJAEGER_AGENT_HOST=172.18.0.91"]
     logging:
       driver: fluentd
       options:
@@ -282,7 +277,7 @@ services:
         tag: "docker.{{.Name}}"
     networks:
       sr_cluster_network:
-        ipv4_address: ${SR_KAFCAS_IP}
+        ipv4_address: ${SR_KC_IP}
     depends_on:
       "cassandra":
         condition: service_healthy

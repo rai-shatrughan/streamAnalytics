@@ -23,7 +23,7 @@ import io.vertx.core.tracing.TracingPolicy;
 import io.vertx.kafka.client.consumer.KafkaConsumer;
 import io.vertx.kafka.client.consumer.KafkaConsumerRecord;
 
-public class KafkaCassandraVerticle extends AbstractVerticle {
+public class KCVerticle extends AbstractVerticle {
 
 	private static final Logger logger = LogManager.getLogger();
 	static KafkaConsumer<String, String> consumer;
@@ -61,13 +61,12 @@ public class KafkaCassandraVerticle extends AbstractVerticle {
 		cassandraClient = CassandraClient.create(vertx, options);
 	}
 
-	public void executeStatement(SimpleStatement simpleStatement) {
+	public void executeStatement(long offset, SimpleStatement simpleStatement) {
 		cassandraClient.execute(simpleStatement, result -> {
 			if (result.succeeded()) {
 				logger.info("Query executed successfully");
 			} else {
-				logger.error("Unable to execute Query");
-				result.cause().printStackTrace();
+				logger.error("Insert failed for offset - {}  - : Exception :   {} ", offset , result.cause().toString());
 			}
 		});
 	}
@@ -77,8 +76,7 @@ public class KafkaCassandraVerticle extends AbstractVerticle {
 			if (result.succeeded()) {
 				logger.info("Batch Query SUCCESS");
 			} else {
-				logger.error("Batch Query FAILED");
-				result.cause().printStackTrace();
+				logger.error("Batch Query FAILED - Exception - {} ", result.cause().toString());
 			}
 		});
 	}
@@ -91,7 +89,7 @@ public class KafkaCassandraVerticle extends AbstractVerticle {
 					+ ",offset=" + record.offset());
 			SimpleStatement simpleStatement = SimpleStatement
 					.newInstance("INSERT INTO " + Constants.CASSANDRA_TABLE_TS + " JSON '" + record.value() + "'");
-			executeStatement(simpleStatement);
+			executeStatement(record.offset(), simpleStatement);
 		});
 	}
 
@@ -109,12 +107,10 @@ public class KafkaCassandraVerticle extends AbstractVerticle {
 							+ ",offset=" + record.offset());
 					SimpleStatement simpleStatement = SimpleStatement.newInstance(
 							"INSERT INTO " + Constants.CASSANDRA_TABLE_TS + " JSON '" + record.value() + "'");
-					executeStatement(simpleStatement);
+					executeStatement(record.offset(), simpleStatement);
 				}
 			}).onFailure(cause -> {
 				logger.error("Something went wrong when polling " + cause.toString());
-				cause.printStackTrace();
-
 				// Stop polling if something went wrong
 				vertx.cancelTimer(timerId);
 			}));
