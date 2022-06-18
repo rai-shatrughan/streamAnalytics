@@ -25,6 +25,13 @@ docker-compose --env-file .env -f docker-compose.yml build
 docker-compose --env-file .env -f docker-compose.yml up -d
 
 #configure for 1st time usage.
+echo "init superset***"
 bash superset/init.sh
+echo "init solr****"
 bash solr/init.sh
+echo "init cassandra*****"
 bash cassandra/init.sh
+echo "wait for solr up zzzzzzz"
+sleep 60
+echo "create supersetDB*****"
+bash superset/createDB.sh

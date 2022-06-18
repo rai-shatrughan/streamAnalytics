@@ -229,6 +229,8 @@ services:
     networks:
       sr_cluster_network:
         ipv4_address: ${SUPERSET_IP}
+    depends_on:
+      - solr
 
   zeppelin:
     image: apache/zeppelin:0.10.1

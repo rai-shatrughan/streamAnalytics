@@ -7,5 +7,6 @@ RUN pip install mysqlclient
 # you want to connect to here:
 # https://superset.apache.org/installation.html#database-dependencies
 RUN pip install pyhive sqlalchemy-solr
+COPY superset_config.py /home/superset/
 # Switching back to using the `superset` user
 USER superset
