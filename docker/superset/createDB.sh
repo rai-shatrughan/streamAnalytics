@@ -40,7 +40,7 @@ curl -X 'POST'\
 
 
 curl -X 'POST' \
-  'http://172.18.0.140:8088/api/v1/database/' \
+  'http://172.18.0.140:8088/api/v1/dataset/' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -H "Authorization: Bearer $access_token" \
@@ -51,3 +51,12 @@ curl -X 'POST' \
   ],
   "table_name": "gettingstarted"
 }'
+
+curl -X 'POST' \
+  'http://172.18.0.140:8088/api/v1/dashboard/import/' \
+  -H 'accept: application/json' \
+  -H "Authorization: Bearer $access_token" \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'formData=@dashboard.json;type=application/json' \
+  -F 'overwrite=false' \
+  -F 'passwords=123'
