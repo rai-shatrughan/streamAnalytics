@@ -18,7 +18,7 @@ bash gradlew jibDockerBuild
 
 cd ../docker
 
-docker-compose -f docker-compose.yml up -d sr-me-kafcas sr-me-ws
+docker-compose -f docker-compose.yml up -d sr-me-kc sr-me-ws
 
 cd ../ws
 
