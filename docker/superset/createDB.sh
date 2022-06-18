@@ -10,6 +10,7 @@ access_token=$(curl -X POST -H 'Content-type:application/json' \
 }' http://172.18.0.140:8088/api/v1/security/login | jq -r '.access_token')
 
 echo $access_token
+echo
 
 csrf_token=$(curl -X GET \
 -H 'accept: application/json' \
@@ -17,6 +18,7 @@ csrf_token=$(curl -X GET \
  http://172.18.0.140:8088/api/v1/security/csrf_token/ | jq -r '.result')
   
 echo $csrf_token
+echo
 
 curl -X 'POST'\
  'http://172.18.0.140:8088/api/v1/database/' \
@@ -38,6 +40,7 @@ curl -X 'POST'\
   "sqlalchemy_uri": "solr+http://172.18.0.111:8983/solr/gettingstarted"
 }' 
 
+echo
 
 curl -X 'POST' \
   'http://172.18.0.140:8088/api/v1/dataset/' \
@@ -52,11 +55,15 @@ curl -X 'POST' \
   "table_name": "gettingstarted"
 }'
 
+echo
+
 curl -X 'POST' \
   'http://172.18.0.140:8088/api/v1/dashboard/import/' \
   -H 'accept: application/json' \
   -H "Authorization: Bearer $access_token" \
   -H 'Content-Type: multipart/form-data' \
-  -F 'formData=@dashboard.json;type=application/json' \
+  -F 'formData=@superset/dashboard.json;type=application/json' \
   -F 'overwrite=false' \
   -F 'passwords=123'
+
+echo

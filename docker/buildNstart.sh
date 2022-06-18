@@ -35,6 +35,7 @@ bash solr/init.sh
 echo "init cassandra*****"
 echo
 bash cassandra/init.sh
+echo
 echo "wait for solr up zzzzzzz"
 echo
 sleep 60
