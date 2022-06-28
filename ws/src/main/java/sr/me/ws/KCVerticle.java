@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collector;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.CqlSessionBuilder;
 import com.datastax.oss.driver.api.core.cql.BatchStatement;
 import com.datastax.oss.driver.api.core.cql.Row;
 import com.datastax.oss.driver.api.core.cql.SimpleStatement;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import io.vertx.cassandra.CassandraClient;
 import io.vertx.cassandra.CassandraClientOptions;
@@ -22,6 +22,8 @@ import io.vertx.core.Vertx;
 import io.vertx.core.tracing.TracingPolicy;
 import io.vertx.kafka.client.consumer.KafkaConsumer;
 import io.vertx.kafka.client.consumer.KafkaConsumerRecord;
+
+import sr.me.common.Constants;
 
 public class KCVerticle extends AbstractVerticle {
 

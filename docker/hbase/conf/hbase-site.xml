@@ -23,7 +23,7 @@
 <configuration>
   <property>
     <name>hbase.master.hostname</name>
-    <value>127.0.0.1</value>
+    <value>172.18.0.121</value>
     <!-- master.local is the DNS name in my network pointing to hbase master -->
   </property>
 
@@ -42,7 +42,7 @@
 
   <property>
     <name>hbase.zookeeper.quorum</name>
-    <value>127.0.0.1</value>
+    <value>172.18.0.121</value>
   </property>
 
   <property>

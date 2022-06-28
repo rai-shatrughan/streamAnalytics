@@ -37,6 +37,9 @@ dependencies {
 
 		implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '2.2.0'
 
+    implementation group: 'org.apache.hbase', name: 'hbase-client', version: '2.4.12'
+    implementation group: 'org.apache.hbase', name: 'hbase', version: '2.4.12'
+
 }
 
 task perf(type: JavaExec) {
@@ -49,7 +52,7 @@ task perf(type: JavaExec) {
 task stream(type: JavaExec) {
     group = "Execution"
     classpath = sourceSets.test.runtimeClasspath
-    main = 'sr.me.ws.Stream'
+    main = 'sr.me.sprk.Stream'
 }
 
 task iot(type: JavaExec) {

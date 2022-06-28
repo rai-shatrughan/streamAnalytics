@@ -1,19 +1,22 @@
 package sr.me.ws;
 
-import io.vertx.core.Vertx;
-import io.vertx.core.VertxOptions;
+import java.time.Instant;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Promise;
+import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.predicate.ResponsePredicate;
 import io.vertx.ext.web.codec.BodyCodec;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import java.time.Instant;
+import sr.me.common.Constants;
 
 public class TestVerticle extends AbstractVerticle {
   private static final Logger logger = LogManager.getLogger();

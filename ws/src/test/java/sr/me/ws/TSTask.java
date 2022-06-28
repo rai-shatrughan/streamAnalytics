@@ -1,33 +1,16 @@
 package sr.me.ws;
 
-import io.vertx.core.Vertx;
-import io.vertx.core.Future;
-import io.vertx.core.VertxOptions;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.Executors;
-import io.vertx.core.DeploymentOptions;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpMethod;
-import io.vertx.junit5.VertxExtension;
-import io.vertx.junit5.VertxTestContext;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import io.vertx.core.AbstractVerticle;
+import java.time.Instant;
+import java.util.TimerTask;
+
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.HttpRequest;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.ext.web.client.predicate.ResponsePredicate;
 import io.vertx.ext.web.codec.BodyCodec;
-import io.vertx.json.schema.common.dsl.Schemas;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimerTask;
+import sr.me.common.Constants;
 
 public class TSTask extends TimerTask {
   private Vertx vertx;

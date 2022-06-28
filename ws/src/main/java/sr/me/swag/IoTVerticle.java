@@ -2,29 +2,15 @@ package sr.me.swag;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
-import io.vertx.core.http.HttpServer;
-import io.vertx.ext.web.Route;
-import io.vertx.ext.web.Router;
-import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.handler.StaticHandler;
-import io.vertx.micrometer.PrometheusScrapingHandler;
-import io.vertx.core.json.JsonObject;
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Promise;
-import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
-import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.net.SelfSignedCertificate;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.openapi.RouterBuilder;
-import io.vertx.ext.web.validation.RequestParameters;
-import io.vertx.ext.web.validation.ValidationHandler;
-import io.vertx.core.net.SelfSignedCertificate;
 
-import sr.me.ws.Handlers;
+import sr.me.handler.Handlers;
 
 public class IoTVerticle extends AbstractVerticle {
 

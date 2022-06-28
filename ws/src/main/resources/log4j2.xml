@@ -10,8 +10,11 @@
     </Console>
 </Appenders>
   <Loggers>
-    <Root level="ERROR">
+    <Root level="INFO">
       <AppenderRef ref="ConsoleJSONAppender"/>
     </Root>
+    <Logger name="org.apache" level="ERROR" additivity="false">
+      <AppenderRef ref="ConsoleJSONAppender"/>
+    </Logger>
   </Loggers>
 </Configuration>
