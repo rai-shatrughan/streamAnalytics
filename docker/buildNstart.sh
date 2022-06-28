@@ -3,10 +3,14 @@
     --subnet=172.18.0.0/23 \
     sr_cluster_network
 
+echo "downloading Hbase binary 1st time only"
+cd Hbase
+bash download.sh    
+
 docker-compose --env-file .env -f docker-compose.yml down
 
 root_path=/data
-data_folders=("fluentd" "kafka" "zookeeper" "cassandra" "prometheus" "grafana" "superset" "zeppelin" "solr")
+data_folders=("fluentd" "kafka" "zookeeper" "hbase" "cassandra" "prometheus" "grafana" "superset" "zeppelin" "solr")
 for dir in ${data_folders[@]}; do
     wd=$root_path/$dir
 
