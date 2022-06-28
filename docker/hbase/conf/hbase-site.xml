@@ -29,7 +29,7 @@
 
   <property>
     <name>hbase.rootdir</name>
-    <value>file:///tmp/</value>
+    <value>file:///tmp/hbase_root</value>
   </property>
   <property>
     <name>hbase.zookeeper.property.dataDir</name>

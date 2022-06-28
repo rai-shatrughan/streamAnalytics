@@ -26,6 +26,22 @@ services:
       sr_cluster_network:
         ipv4_address: ${FLUENTD1_IP}
 
+  hbase:
+    build: ./hbase
+    image: hbase
+    hostname: hbase
+    container_name: hbase
+    volumes:
+      - /data/hbase:/tmp
+    command: >
+      bash -c "bin/start-hbase.sh && tail -f logs/hbase--master-hbase.log"
+    ports:
+      - "16010:16010"
+      - "2181"
+    networks:
+      sr_cluster_network:
+        ipv4_address: ${HBASE_IP}
+
   cassandra:
     image: cassandra:4.0.4
     container_name: cassandra

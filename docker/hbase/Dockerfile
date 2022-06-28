@@ -15,6 +15,7 @@ ADD binary/${HBASE_BINARY} /opt/
 ENV PATH=$PATH:/opt/${HBASE_DIR}/bin
 ENV HBASE_HOME=/opt/${HBASE_DIR}
 
-
+ADD conf/hbase-env.sh /opt/${HBASE_DIR}/conf/hbase-env.sh
+ADD conf/hbase-site.xml /opt/${HBASE_DIR}/conf/hbase-site.xml
 
 WORKDIR /opt/${HBASE_DIR}
