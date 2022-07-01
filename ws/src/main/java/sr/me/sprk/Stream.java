@@ -102,7 +102,7 @@ public class Stream implements Serializable {
           Put p = new Put(prow);
           p.addColumn(COLUMN_FAMILY.getBytes(), key.getBytes(), rdd._2().getBytes());
           putList.add(p);
-          System.out.println(putList.size());
+          System.out.println(key);
         } catch (Exception e) {
           System.out.println("Error writing TimeSeries Data to Hbase for RDD : " + rdd._2());
           return;

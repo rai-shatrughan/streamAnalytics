@@ -117,7 +117,7 @@ public class HbaseHandler implements Serializable {
   public void puts(Table table, List<Put> putList) {
    try{
     table.put(putList);
-    logger.info("Success Putting");
+    // logger.info("Success Putting");
    } catch (Exception e){
      logger.error(e.getCause());
    }

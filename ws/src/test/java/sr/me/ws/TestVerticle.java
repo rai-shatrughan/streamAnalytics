@@ -27,7 +27,7 @@ public class TestVerticle extends AbstractVerticle {
 
     DeploymentOptions depOptions = new DeploymentOptions();
     depOptions.setWorker(true).setWorkerPoolSize(workers);
-    depOptions.setInstances(100);
+    depOptions.setInstances(5000);
 
     VertxOptions vertxOptions = new VertxOptions();
     // default event pool size is (no. of cores*2)
