@@ -10,7 +10,7 @@ import io.vertx.core.net.SelfSignedCertificate;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.openapi.RouterBuilder;
 
-import sr.me.handler.Handlers;
+import sr.me.handler.APIHandler;
 
 public class IoTVerticle extends AbstractVerticle {
 
@@ -19,16 +19,16 @@ public class IoTVerticle extends AbstractVerticle {
 
   @Override
   public void start(Promise<Void> startPromise) throws Exception {
-    Handlers handlers = new Handlers(vertx);
+    APIHandler apiHandler = new APIHandler(vertx);
 
     RouterBuilder.create(this.vertx, "swagger/iot-ts.yaml")
         .onSuccess(routerBuilder -> { // (1)
 
           routerBuilder.operation("createOrUpdateTimeseries")
-              .handler(routingContext -> handlers.timeSeriesHandler(routingContext));
+              .handler(routingContext -> apiHandler.timeSeriesHandler(routingContext));
 
           routerBuilder.operation("retrieveTimeseries")
-              .handler(routingContext -> handlers.timeSeriesHandler(routingContext));
+              .handler(routingContext -> apiHandler.timeSeriesHandler(routingContext));
 
           Router router = routerBuilder.createRouter(); // (1)
           router.errorHandler(404, routingContext -> { // (2)

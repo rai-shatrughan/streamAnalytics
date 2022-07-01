@@ -33,11 +33,13 @@ services:
     container_name: hbase
     volumes:
       - /data/hbase:/tmp
+      - /data/hbase/:/logs
     command: >
-      bash -c "bin/start-hbase.sh && tail -f logs/hbase--master-hbase.log"
+      bash -c "bin/start-hbase.sh && tail -f /logs/hbase--master-hbase.log"
     ports:
       - "16010:16010"
-      - "2181"
+      - "16020:16020"
+      - "16000:16000"
     networks:
       sr_cluster_network:
         ipv4_address: ${HBASE_IP}

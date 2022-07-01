@@ -15,8 +15,8 @@ public class Constants {
   public static final String CASSANDRA_KEYSPACE_TS = System.getenv().getOrDefault("CASSANDRA_KEYSPACE_TS", "tsks");
   public static final String CASSANDRA_TABLE_TS = System.getenv().getOrDefault("CASSANDRA_TABLE_TS", "tstable");
 
-  public static final String HBASE_ZK_QUORUM = System.getenv().getOrDefault("HBASE_ZK_QUORUM",
-      "172.18.0.121");
+  // Kafka zookeeper is shared
+  public static final String HBASE_ZK_QUORUM = System.getenv().getOrDefault("HBASE_ZK_QUORUM", "172.18.0.51");
 
   public static final String KAFKA_BOOTSTRAP_SERVERS = System.getenv().getOrDefault("KAFKA_BOOTSTRAP_SERVERS",
       "172.18.0.41:9092");

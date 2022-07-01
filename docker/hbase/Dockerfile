@@ -8,6 +8,7 @@ ENV JAVA_HOME /usr/local/openjdk-8/
 ENV PATH $JAVA_HOME/bin:$PATH
 
 VOLUME /tmp
+VOLUME /logs
 RUN mkdir -p /tmp/zookeeper
 
 ADD binary/${HBASE_BINARY} /opt/

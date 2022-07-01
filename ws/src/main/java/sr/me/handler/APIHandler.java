@@ -16,13 +16,13 @@ import io.vertx.kafka.client.producer.KafkaProducerRecord;
 
 import sr.me.common.Constants;
 
-public class Handlers {
+public class APIHandler {
 
   private static final Logger logger = LogManager.getLogger();
 
   static KafkaProducer<String, String> producer;
 
-  public Handlers(Vertx vertx) {
+  public APIHandler(Vertx vertx) {
     Map<String, String> config = new HashMap<>();
     config.put("bootstrap.servers", Constants.KAFKA_BOOTSTRAP_SERVERS);
     config.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");

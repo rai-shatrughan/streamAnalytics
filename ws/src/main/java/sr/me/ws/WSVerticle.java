@@ -10,7 +10,7 @@ import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.micrometer.PrometheusScrapingHandler;
 
 import sr.me.common.Constants;
-import sr.me.handler.Handlers;
+import sr.me.handler.APIHandler;
 
 public class WSVerticle extends AbstractVerticle {
 
@@ -27,7 +27,7 @@ public class WSVerticle extends AbstractVerticle {
     Router router = Router.router(vertx);
     router.route().handler(BodyHandler.create());
 
-    Handlers handlers = new Handlers(vertx);
+    APIHandler apiHandler = new APIHandler(vertx);
 
     // serve static files from src/main/resources/webroot
     router.get().handler(StaticHandler.create());
@@ -37,12 +37,12 @@ public class WSVerticle extends AbstractVerticle {
     Route streamRoute = router.route(basePath + streamPath);
     Route metricsRoute = router.route(defaultPath + metricsPath);
 
-    defaultRoute.handler(ctx -> handlers.defaultRouteHandler(ctx));
-    timeSeriesRoute.handler(ctx -> handlers.timeSeriesHandler(ctx));
-    streamRoute.handler(ctx -> handlers.streamHandler(ctx));
+    defaultRoute.handler(ctx -> apiHandler.defaultRouteHandler(ctx));
+    timeSeriesRoute.handler(ctx -> apiHandler.timeSeriesHandler(ctx));
+    streamRoute.handler(ctx -> apiHandler.streamHandler(ctx));
     metricsRoute.handler(PrometheusScrapingHandler.create());
 
-    server.requestHandler(router).listen(port, res -> handlers.serverHandler(port, res));
+    server.requestHandler(router).listen(port, res -> apiHandler.serverHandler(port, res));
 
   }
 }

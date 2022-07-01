@@ -1,0 +1,41 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launch Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "Launch Hbase",
+      "request": "launch",
+      "mainClass": "sr.me.handler.Hbase",
+      "projectName": "ws"
+    },
+    {
+      "type": "java",
+      "name": "Launch Stream",
+      "request": "launch",
+      "mainClass": "sr.me.sprk.Stream",
+      "projectName": "ws"
+    },
+    {
+      "type": "java",
+      "name": "Launch CustomLauncher",
+      "request": "launch",
+      "mainClass": "sr.me.ws.CustomLauncher",
+      "projectName": "ws"
+    },
+    {
+      "type": "java",
+      "name": "Launch TestVerticle",
+      "request": "launch",
+      "mainClass": "sr.me.ws.TestVerticle",
+      "projectName": "ws"
+    }
+  ]
+}
