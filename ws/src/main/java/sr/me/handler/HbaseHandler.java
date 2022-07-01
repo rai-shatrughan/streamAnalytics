@@ -1,6 +1,9 @@
 package sr.me.handler;
 
 import java.io.IOException;
+import java.util.List;
+import java.time.Instant;
+import java.io.Serializable;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
@@ -21,7 +24,7 @@ import org.apache.logging.log4j.Logger;
 
 import sr.me.common.Constants;
 
-public class HbaseHandler {
+public class HbaseHandler implements Serializable {
 
   static HBaseConfiguration hBaseConfiguration;
   static Configuration conf;
@@ -73,54 +76,37 @@ public class HbaseHandler {
     }
   }
 
-  public void putHbaseTable(String tableName, String columnFamily, String key, String timeSeriesValues)
-      throws IOException {
+  public Table getTable(String tableName){
+    Table table = null;
+    try{
+      table = connection.getTable(TableName.valueOf(tableName));
+    } catch (Exception e){
+      logger.error(e.getCause());
+    }
+    return table;
+  }
 
-    // get the table
-    Table table = connection.getTable(TableName.valueOf(tableName));
+  public void put(Table table, String columnFamily, String key, String timeSeriesValues) {
     try {
-
-      // put a row
       byte[] prow = Bytes.toBytes(key);
       Put p = new Put(prow);
       p.addColumn(columnFamily.getBytes(), key.getBytes(), timeSeriesValues.getBytes());
-      // p.addColumn("aspect".getBytes(), key.getBytes(),
-      // timeSeriesValues.getBytes());
       table.put(p);
       System.out.println("+++Success+++");
-      // table.close();
 
-    } finally {
-      try {
-        // close table connection
-        if (table != null) {
-          table.close();
-        } else {
-          System.out.println("No such table");
-        }
-        // close hbase connection
-        // if (connection != null && !connection.isClosed()) {
-        // connection.close();
-        // }
-      } catch (Exception e2) {
+    } catch (Exception e2) {
         e2.printStackTrace();
-      }
     }
 
   }
 
-  public void getHbaseTable(String tableName, String columnFamily, String key) throws IOException {
-
-    // get the table
-    Table table = connection.getTable(TableName.valueOf(tableName));
+  public void get(Table table, String columnFamily, String key) throws IOException {
     try {
-
       byte[] row = Bytes.toBytes(key);
       Get g = new Get(row);
       Result getResult = table.get(g);
       String v = Bytes.toString(getResult.getValue(columnFamily.getBytes(), key.getBytes()));
       System.out.println("Column key value :: " + v);
-
     } catch (Exception e2) {
       e2.printStackTrace();
     } finally {
@@ -128,25 +114,35 @@ public class HbaseHandler {
     }
   }
 
-  // public static void main(String[] args) throws Exception {
-  // HbaseHandler hb = new HbaseHandler();
-  // // hb.cleanTable(TABLE_NAME, COLUMN_FAMILY);
-  // // hb.createHbaseTable(TABLE_NAME, COLUMN_FAMILY);
+  public void puts(Table table, List<Put> putList) {
+   try{
+    table.put(putList);
+    logger.info("Success Putting");
+   } catch (Exception e){
+     logger.error(e.getCause());
+   }
+  }
 
-  // Instant instantStart = Instant.parse("2019-06-12T09:01:56.000Z");
-  // Instant instantEnd = Instant.parse("2019-06-12T09:01:59.000Z");
-  // Instant currentInstant = instantStart;
+  public static void main(String[] args) throws Exception {
+  HbaseHandler hb = new HbaseHandler();
+  hb.cleanTable(TABLE_NAME, COLUMN_FAMILY);
+  hb.createHbaseTable(TABLE_NAME, COLUMN_FAMILY);
+  Table table = hb.getTable(TABLE_NAME);
 
-  // System.out.println(instantStart.toString().replace("Z", ".000Z"));
-  // System.out.println(instantEnd.toString().replace("Z", ".000Z"));
+  Instant instantStart = Instant.parse("2019-06-12T09:01:56.000Z");
+  Instant instantEnd = Instant.parse("2019-06-12T09:01:59.000Z");
+  Instant currentInstant = instantStart;
 
-  // while (instantEnd.compareTo(currentInstant) >= 0) {
-  // String key = "0669019257684578b536eded233c7639_" +
-  // currentInstant.toString().replace("Z", ".000Z");
-  // hb.getHbaseTable(TABLE_NAME, COLUMN_FAMILY, key);
-  // // hb.putHbaseTable(TABLE_NAME, COLUMN_FAMILY, key, key);
-  // System.out.println(key);
-  // currentInstant = currentInstant.plusSeconds(1);
-  // }
-  // }
+  System.out.println(instantStart.toString().replace("Z", ".000Z"));
+  System.out.println(instantEnd.toString().replace("Z", ".000Z"));
+
+  while (instantEnd.compareTo(currentInstant) >= 0) {
+  String key = "0669019257684578b536eded233c7639_" +
+  currentInstant.toString().replace("Z", ".000Z");
+  hb.get(table, COLUMN_FAMILY, key);
+  hb.put(table, COLUMN_FAMILY, key, key);
+  System.out.println(key);
+  currentInstant = currentInstant.plusSeconds(1);
+  }
+  }
 }
