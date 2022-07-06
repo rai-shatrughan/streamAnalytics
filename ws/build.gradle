@@ -61,6 +61,13 @@ task hb(type: JavaExec) {
     main = 'sr.me.handler.HbaseHandler'
 }
 
+task kc(type: JavaExec) {
+    group = "Execution"
+    classpath = sourceSets.test.runtimeClasspath
+    main = 'sr.me.ws.CustomLauncher'
+    args = ['run', 'sr.me.ws.KCVerticle', '-DJAEGER_AGENT_HOST=172.18.0.91']
+}
+
 task iot(type: JavaExec) {
     group = "Execution"
     classpath = sourceSets.test.runtimeClasspath
