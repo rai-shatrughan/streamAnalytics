@@ -302,7 +302,7 @@ services:
     container_name: sr-me-kc
     hostname: sr-me-kc
     restart: always
-    command: ["run", "sr.me.ws.KCVerticle", "-DJAEGER_AGENT_HOST=172.18.0.91"]
+    entrypoint: ["java", "-cp", "@/app/jib-classpath-file", "sr.me.sprk.Stream"]
     logging:
       driver: fluentd
       options:
