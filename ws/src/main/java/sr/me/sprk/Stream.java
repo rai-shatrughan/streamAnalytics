@@ -29,12 +29,17 @@ import org.apache.spark.streaming.kafka010.LocationStrategies;
 
 import io.vertx.core.json.JsonObject;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import sr.me.common.Constants;
 import sr.me.handler.HbaseHandler;
 
 import scala.Tuple2;
 
 public class Stream implements Serializable {
+  private static final Logger logger = LogManager.getLogger();
+
   static String TABLE_NAME = "myTable";
   static String COLUMN_FAMILY = "cf1";
   static Map<String, Object> kafkaParams = new HashMap<>();
@@ -102,7 +107,7 @@ public class Stream implements Serializable {
           Put p = new Put(prow);
           p.addColumn(COLUMN_FAMILY.getBytes(), key.getBytes(), rdd._2().getBytes());
           putList.add(p);
-          System.out.println(key);
+          logger.info(key);
         } catch (Exception e) {
           System.out.println("Error writing TimeSeries Data to Hbase for RDD : " + rdd._2());
           return;
